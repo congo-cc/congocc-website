@@ -1,0 +1,1 @@
+Placeholder for blogs for 2022.

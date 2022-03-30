@@ -1,0 +1,1 @@
+Placeholder for content folder that is the "top" of the blog tree.
