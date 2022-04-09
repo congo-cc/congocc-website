@@ -19,3 +19,31 @@ JBake uses default properties to control many behaviors. These defaults can be o
 
 ### To Be Determined
 Ideally, the same Asciidoc files will perform multiple roles: blog text and pdf tech documentation. Asciidoc documentation show that conditional text is available using ifdef-endif directives to mark portions of text that will only be displayed when the corresponding setting is defined (or NOT defined).
+
+### AsciiDoc Conditionals
+AsciiDoc can use ifdef . . . endif and ifndef . . . endif conditional statements to delimit blocks of text to include or exclude from an outputted document. Here's a few rules.
+
+#### Define Custom Attributes
+Surround the custom attribute with single colons. For example
+
+    :myattribute:
+
+To use this custom attribute
+
+    ifdef::myattribute[]
+    The conditional text goes in here and can continue as long as you want until the end block delimiter (endif::[] is reached
+    endif::myattribute[]
+
+The capitalization of the attribute in the ifdef statement doesn't have to match its capitalization when it was defined but for tidiness it probably should match. 
+
+In the endif terminator, the name of the attribute is optional - the most recent ifdef statement is normally used.
+
+You can define a custom attribute and then "turn it off" by inserting the bang symbol at the beginning of the attribute as follows
+
+    :!myTurnedOffAttribute:
+
+This way you can have the custom attribute ready for use but turned off so you don't see the conditional text until you want it. Preliminary testing indicates that the jBake header info can be included at the top of a text file inside a ifdef::jbake[] conditional block but omitted from PDF by using the bang to turn off the jbake attribute.
+
+AsciiDoc also includes the ifndef conditional for "if NOT defined" situations. It works pretty much the same way but the reverse of ifdef. Any ifndef blocks must be delimited with endif as well.
+
+ifdefs can also call out more than one attribute. For example, if you were working on a project with multiple versions, you could specify blocks that applied to just versions 1 or version 3, etc, by combining them on same ifdef line. You can also specify their relationship (AND, OR, etc). See AsciiDoc docs for more info on how to do this.
