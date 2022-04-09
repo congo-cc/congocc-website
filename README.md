@@ -17,8 +17,8 @@ JBake uses default properties to control many behaviors. These defaults can be o
     jbake -b        "bakes" all of the pages into a website
     jbake -s        "serves" the content. jbake watches the designated content folder(s) and bakes ALL of the files any time a change is detected. The site.host property can be set to a port on localhost to preview the baked output. These baked files can then be uploaded to the docroot location for the website.
 
-### To Be Determined
-Ideally, the same Asciidoc files will perform multiple roles: blog text and pdf tech documentation. Asciidoc documentation show that conditional text is available using ifdef-endif directives to mark portions of text that will only be displayed when the corresponding setting is defined (or NOT defined).
+### Using Conditionals to Control Output Types
+Ideally, the same Asciidoc files will perform multiple roles: blog text and pdf tech documentation. Conditional directives in Asciidoc allow you to control which text is displayed/outputted, depending on the attributes defined.
 
 ### AsciiDoc Conditionals
 AsciiDoc can use ifdef . . . endif and ifndef . . . endif conditional statements to delimit blocks of text to include or exclude from an outputted document. Here's a few rules.
@@ -28,6 +28,7 @@ Surround the custom attribute with single colons. For example
 
     :myattribute:
 
+#### Use Custom Attributes
 To use this custom attribute
 
     ifdef::myattribute[]
@@ -47,3 +48,35 @@ This way you can have the custom attribute ready for use but turned off so you d
 AsciiDoc also includes the ifndef conditional for "if NOT defined" situations. It works pretty much the same way but the reverse of ifdef. Any ifndef blocks must be delimited with endif as well.
 
 ifdefs can also call out more than one attribute. For example, if you were working on a project with multiple versions, you could specify blocks that applied to just versions 1 or version 3, etc, by combining them on same ifdef line. You can also specify their relationship (AND, OR, etc). See AsciiDoc docs for more info on how to do this.
+
+#### Selecting Output for Either Blog or PDF
+The PDF books that have been produced so far have all begun with a "master page" that defines the book settings, title, table of contents, pagination, etc, as well as the chapters to include. Most importantly, the book title MUST begin with single "=" to mark it as the highest level in the book.
+
+The JBake web pages are expected to be more or less stand alone docs and REQUIRE a title for the post or page that is marked with a single "=" as the highest level on that post/page.
+
+The Book Title is unhappy if any of its subsections are also marked with a title ("="). The web pages are unhappy if they don't begin with a title.
+
+What worked was to define a custom attribute in the PDF book master page, such as:
+
+    :pdf-doc:
+
+And then down inside each web page to include in the book:
+
+    ifdef::pdf-doc[]
+
+    == Chapter title or === section title
+
+    endif::[]
+
+    ifndef::pdf-doc[]
+
+    = Post or Page Title
+
+    . . . . restof JBake header
+
+    endif::[]
+
+So when you generate the pdf, it sees the definition of pdf-doc and uses the correct level of indenture for the Chapter or Section titles and ignores the JBake header info. And when you are in JBake, it doesn't see the pdf-doc attribute definition so it ignores the Chapter/section titles and uses the JBake header info, including the top level title.
+
+So some of the fun stuff in the blog, such as scandalous accusations or serious fun-making can be marked as ifndef::pdf-doc[] blocks and they won't show up in the more serious book material. And in the same way, the section/subsection titles and levels of indenture can be marked ifdef::pdf-doc[] so they only show up in the book.
+
