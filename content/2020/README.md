@@ -1,0 +1,3 @@
+The example file in this folder was taken from the javac.com blog website and then streamlined for the Intro JavaCC 21 book. Note that the indexing markups (((primary index, secondary index))) were all ignored when it was prepared for blog publication by JBake.
+
+Need to experiment with ifdef stuff to see if we can incorporate all info into single files that can be used for multiple purposes (blog, book, etc).
