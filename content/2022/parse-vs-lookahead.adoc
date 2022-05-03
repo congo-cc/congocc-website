@@ -1,15 +1,19 @@
 //From an email from Jon - this attachment MAY be a future blog
 //[[ ]] is an inline anchor to make arbitrary content referenceable 
 //[[[]]] triple brackets are bibliographic references
+// Author's name is interpolated in template as ${post.author} in index.ftl
+// as as ${content.author} in page.ftl and post.ftl
 [[parsing-vs-scanning]]
+:jbake:
+ifdef::jbake[]
 = CongoCC Basics
 Jonathan Revusky
-2022-04-01
+2022-02-01
 :jbake-type: post
 :jbake-tags: announcements, roadmap
 :jbake-status: published
-== SCAN and LOOKAHEAD
-=== Parsing vs. Scanning
+endif::[]
+== Parsing vs. Scanning
 
 (((Parsing vs Scanning)))
 Consider the following JavaCC construct:
@@ -18,6 +22,8 @@ Consider the following JavaCC construct:
 ----
 
 While the above three tokens, "foo", "bar", and "baz", are of equal weight and deserving of equal treatment, one of them is somehow different from the others.
+
+//image::images/beach.jpg[Beach,236,288]
 
 Well, the difference will be more apparent if we write the above construct in pseudo-code:
 ----

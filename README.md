@@ -1,3 +1,10 @@
+title=README.md
+date=2022-04-30
+author=Nelson Chamberlain
+type=post
+tags=readme
+status=draft
+~~~~~~
 # congocc-website
 A static website dedicated to all things CongoCC, including the parser generators, multiple programming language parsing, an updated FreeMarker template system, and more. 
 
@@ -16,6 +23,22 @@ JBake uses default properties to control many behaviors. These defaults can be o
     jbake -i        initializes a JBake installation
     jbake -b        "bakes" all of the pages into a website
     jbake -s        "serves" the content. jbake watches the designated content folder(s) and bakes ALL of the files any time a change is detected. The site.host property can be set to a port on localhost to preview the baked output. These baked files can then be uploaded to the docroot location for the website.
+    
+### Some JBake Requirements
+JBake requires a "header" section that includes: author, date, jbake-type, jbake-tags, jbake-status. These should go on separate lines WITHOUT blank lines separating them. Blank lines cause JBake to NOT be recognize the asciidoc as a web page/post and to NOT generate any html output.
+
+JBake also requires that the assets, output, and template directories be located in the same directory as the content directory (which contains the asciidoc pages/posts). This requirement means that .gitignore file must be updated so it will ignore these folders and since .gitignore is also tracked under git, any time it is updated, it needs to get pushed to the repository. 
+
+If we make significant changes to the FreeMarker templates, the template directory may also be kept in the repository so we don't have to reinvent the wheel if the templates get crunched. And we might want to upload all these "support" directories to the repository since they are less than 1MB and that way one could download the complete build environment and regenerate the website (after installing JBake executable).
+
+### Bootstrap
+The bootstrap.js library provided with JBake was last updated in 2014 (v3.1.1) and the current release is 5.1-ish. Significant capabilities have been added (a photo carousel, accordions, and a variety of other components, svg icons, etc). Need to see if we can update JBake to use latest version of Bootstrap.
+
+### jQuery
+The jQuery.js library included with JBake is version 1.11.1 while the current version is 3.6.0. Not sure what changes have happened since v1.11.1 was released but it's probably been a while and one would assume that numerous safety & security fixes have been included.
+
+### prettify.js
+The prettify.js library is also included JBake and is probably also pretty out of date. I don't see a version in provided .js but the latest version is 3.1.10.
 
 ### Using Conditionals to Control Output Types
 Ideally, the same Asciidoc files will perform multiple roles: blog text and pdf tech documentation. Conditional directives in Asciidoc allow you to control which text is displayed/outputted, depending on the attributes defined.

@@ -1,3 +1,9 @@
-The example file in this folder was taken from the javac.com blog website and then streamlined for the Intro JavaCC 21 book. Note that the indexing markups (((primary index, secondary index))) were all ignored when it was prepared for blog publication by JBake.
+title=content/2021/README.md
+date=2022-04-30
+author=Nelson Chamberlain
+type=post
+tags=readme
+status=draft
+~~~~~~
 
-Need to experiment with ifdef stuff to see if we can incorporate all info into single files that can be used for multiple purposes (blog, book, etc).
+Note that the author field must be filled in or there will be an FAIL reported on the jbake/jetty screen when this file is saved and no output will be generated. The status of Draft does NOT prevent this file from being converted into an html page but it will include the word "draft" in the name of this file.
