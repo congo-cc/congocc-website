@@ -1,0 +1,2 @@
+5/1/2022: I had to rename bootstrap.min.js to MyBootstrap.min.js because Chrome browser had the overwhelming desire to download the latest version (5.0.2) of bootstrap because the version that came with JBake is v3.1.1 and about 8 years old.
+NEC

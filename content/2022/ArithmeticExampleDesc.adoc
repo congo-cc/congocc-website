@@ -1,0 +1,209 @@
+//comments examples/arithmetic/Arithmetic1.javacc
+// Author's name is interpolated in template as ${post.author} in index.ftl
+// as as ${content.author} in page.ftl and post.ftl
+:jbake:
+ifdef::jbake[]
+= Learning CongoCC by Examples - Part 1
+Nelson Chamberlain
+2022-04-28
+:jbake-type: post
+:jbake-tags: learning
+:jbake-status: published
+endif::[]
+== Dissecting the Arithmetic Grammars
+
+As developers, we are trained from the beginning to create simple straightforward programs. Programs with clear logic and structure, with well-defined beginnings and exits. Simple good - convoluted bad.
+
+JavaCC, as well as most other parser & compiler generators, emphasize a different kind of logic because they need to handle statements and expressions of arbitrary complexity. With most Java applications, we can manage and structure most situations using loops (for, while, etc) and iterating through lists. We can arrange or manage the content being processed so they fit looping and list constructs, even if the logic becomes extremely complicated at times.
+
+The arithmetic grammars that come with JavaCC21 (examples/arithmetic/Arithmetic1/2.javacc) can generate a parser that can process arithmetic statements of arbitrary complexity with nesting and grouping of items while observing the generally accepted order of operation or precedence rules. The Arithmetic2.javacc grammar includes the Arithmetic1 grammar and adds the ability to calculate the results of the arithmetic statement that you enter, so this commentary will use that one.
+
+Not only do the Arithmetic grammars accomplish the complicated task of correctly processing arbitrary arithmetic statements in MDAS order, it does this while also using very few lines in the grammar by fully exploiting the recursive capabilities of JavaCC. The heart of the arithmetic capabilities are shown below:
+----
+ 1    AdditiveExpression :
+ 2       MultiplicativeExpression
+ 3       (
+ 4         (<PLUS>|<MINUS>)
+ 5         MultiplicativeExpression
+ 6       )*
+ 7    ;
+ 8
+ 9   MultiplicativeExpression :
+10      (<NUMBER> | ParentheticalExpression)
+11      (
+12         (<TIMES>|<DIVIDE>)
+13         (<NUMBER> | ParentheticalExpression)
+14      )*
+15   ;
+16
+17   ParentheticalExpression :
+18      <OPEN_PAREN>
+19      AdditiveExpression
+20      <CLOSE_PAREN>
+21   ;
+22
+23   Root : AdditiveExpression <EOF> ;
+----
+
+Now most of us have had to write a simple four-function calculator program at one time or another and it almost certainly looked nothing like the above productions. It probably had well-defined functions with meaningful names like addValue() and an accumulator of some sort and it all probably seemed pretty straightforward. So parsing a line of arithmetic doesn't seem like it should be that much more difficult.
+
+However, the reason for this programming simplicity is that the arbitrary complexity of mixed arithmetic operations was defined away before even starting by using the four-function calculator as the model. If one were given some random arithmetic statement, such as:
+----
+ 3 + 8 * 5 -7
+----
+
+it is our responsibility, as the human in the loop, to perform the operations on the calculator in the correct (or at least standard sequence) of Multiply - Divide - Add - Subtract (MDAS). Or in this case:
+----
+ 8
+ *
+ 5
+ =    (result of 40 is displayed)
+ +
+ 3
+ =    (result of 43 is displayed)
+ -
+ 7
+ =     (result of 36 is displayed)
+----
+If one were to perform the calculations in simple left-to-right order, the result would be 48. And performed right-to-left order, the result would be -13.
+
+Parentheses can be used to clarify the proper order of operations, either standard MDAS sequence or otherwise. For example, to be extremely clear, the original arithmetic statement could be written:
+----
+3 + (8 * 5) - 7     (result is 36)
+----
+The parentheses can specify other sequences, such as:
+----
+(3 + 8) * 5 - 7     (result is 48)
+----
+or
+----
+(3 + 8) * (5 - 7)   (result is -22)
+----
+or even
+----
+(3 + (8 * (5 - 7))) (result is -13)
+----
+where the innermost pair of parentheses is solved first.
+
+Imagine trying to get all those possible ways of grouping and ordering the operations in your code. The simple straightforward code suddenly doesn't look so easy. And what if the arithmetic statement has nonsensical grouping, such as:
+----
+((((3 + 8) * 5 - 7)))
+----
+will your straightforward code handle that possibility?
+
+The snippet of grammar above demonstrates the power of recursion to handle any combination of grouping with parentheses in a comparatively small number of lines. So let's step through these grammar lines and see how they work.
+
+If you haven't done so already, from a command line/terminal window, change directory to the examples/arithmetic folder of the JavaCC21 repository that you downloaded/cloned and issue these commands:
+----
+java -jar <path to jarfile>/javacc-full.jar Arithmetic2.javacc
+javac ex2/*.java
+java ex2.Calc
+----
+The cursor will appear on a blank like below the last command, waiting for you to enter an arithmetic statement. Let's begin by entering a simple addition statement:
+----
+3 + 5
+----
+Which produces the following output when ex2.Calc is run:
+----
+ Dumping the AST...
+ Root
+   AdditiveExpression
+     3
+     +
+     5
+   EOF
+ The result is: 8.0
+----
+
+The generated parser begins by calling the parser's Root production (line 23) from the main() function. As we can see above, all Root does is trigger the AdditiveExpression production (line 1). AdditiveExpression in turn triggers the MultiplicativeExpression (line 9) which begins by trying to find a <NUMBER>.
+
+In this example, it finds the number 3 (line 10) and puts it on the stack. Next it tries to find either the TIMES or DIVIDE token (line 12) and fails, so the MultiplicativeExpression production returns and AdditiveExpression resumes at line 4 and finds a PLUS token that goes on the stack.
+
+Processing then returns to the MultiplicativeExpression (line 9) which again looks for either a NUMBER token or a ParentheticalExpression (line 10). Since it finds a NUMBER, a "5" that also gets put onto the stack, it then looks for either the TIMES or the DIVIDE token. Failing to find those, processing returns to the AdditiveExpression.
+
+AdditiveExpression fails to find any additional input text to process so processing returns to Root production (line 23) where it finds the End of File token and then terminates. Not shown above is the main() function that evaluates the items in the stack, converting them into numerical values and then performing the assigned calculations, which produces the expected result of 8.0.
+
+Now let's do it again, but with parentheses. Our expression this time is:
+----
+(3 + 5)
+----
+which produces the following output:
+----
+Dumping the AST...
+Root
+  ParentheticalExpression
+    (
+    AdditiveExpression
+      3
+      +
+      5
+    )
+  EOF
+The result is: 8.0
+----
+Processing is similar to the last example, where processing goes from line 23 to line 2 to line 10 but this time continues onto line 18 where it does indeed find an OPEN_PAREN token. Processing then continues on line 19 which redirects processing to the AdditiveExpression production (line 1) and the whole process of looking for additive or multiplicative expressions starts all over again.
+
+Note that in the output, the AdditiveExpression is indented so it is listed under ParentheticalExpression. The technical reason for this indenting is that the AdditiveExpression is in a new NodeScope belonging to the ParentheticalExpression. We'll cover NodeScopes later but for now we'll just say that each NodeScope is its own "context" with its own set of values which can contain other NodeScopes, etc. It is loosely similar to defining variables with the same name inside and outside different programming scopes (typically defined by curly braces { . . }).
+
+Take a minute or few to experiment with parentheses and simple addition statements. What results do you get with (3) + (5) and (((3 + 5))) and (3 + (5)). They should all produce a result of 8.0.
+
+What happens if you put parentheses around each of the items, such as (3) (+) (5)? Right, it terminates with a ParseException because it doesn't expect to find an operator (+ * - /) alone inside a ParentheticalExpression.
+
+Now let's mix our arithmetic operations. Let's try:
+----
+3 + 5 * 7
+----
+which should produce the following output:
+----
+Dumping the AST...
+Root
+  AdditiveExpression
+    3
+    +
+    MultiplicativeExpression
+      5
+      *
+      7
+  EOF
+The result is: 38.0
+----
+This result matches the expected result following the standard order of operations, where multiplication or division operations are performed before additive or subtractive operations. Let's go through this sequence line by line.
+
+As before, Root (line 23) calls AdditiveExpression (line 1) which in line 2 calls MultiplicativeExpression (line 9) which finds a NUMBER (line 10) but then returns to AdditiveExpression where it finds a PLUS token (line 4). It then returns to MultiplicativeExpression (line 9) where it finds a NUMBER (line 10), a TIMES token (line 11) and another NUMBER token, successfully completing the MultiplicativeExpression production which completes the AdditiveExpression production which then terminates parsing with the EOF. The main function then dumps the AST tree and then evaluates the numbers it found and performs the operations in the desired order, with the multiplicative expressions (most indented values) performed first.
+
+If you explicitly specify the order by putting parentheses around the multiplication part (5 * 7) the same result is displayed. The only difference in the lines of output is that the MultiplicativeExpression is now indented under the ParentheticalExpression but the multiplication is still performed first.
+
+Now let's put the parentheses around the additive operation, as so:
+----
+(3 + 5) * 7
+----
+The output that is displayed looks like the following:
+----
+Dumping the AST...
+Root
+  MultiplicativeExpression
+    ParentheticalExpression
+      (
+      AdditiveExpression
+        3
+        +
+        5
+      )
+    *
+    7
+  EOF
+The result is: 56.0
+----
+Let's run thru the sequence of processing line by line. As before, Root (line 23) calls AdditiveExpression (line 1) which in line 2 calls MultiplicativeExpression (line 9) which does NOT find a NUMBER (line 10) so it looks for a ParentheticalExpression (line 17). It does find an OPEN_PAREN token (line 18) followed by an AdditiveExpression (line 19) followed by a CLOSE_PAREN token, successfully completing that production.
+
+Processing then continues in MultiplicativeExpression at line 12 where a TIMES token is found, followed by a NUMBER token (line 13) which then completes that production. The AST is then dumped and its contents evaluated and the result calculated as shown above.
+
+Together, these relatively few lines of grammar code contain the almost magical capability to correctly parse arithmetic expressions of arbitrary complexity and nesting levels and rejecting incorrectly formed statements (incorrect number of parentheses, etc). And the arithmetic operations are performed in the correct order, according to the standard rules of MDAS.
+
+This is possible because the AdditiveExpression and MultiplicativeExpression productions cover all four arithmetic operations between them. Based on the arithmetic expression you provide as input, these two productions, aided by the ParentheticalExpression production, call themselves recursively or call each other as required.
+
+My suspicion is that the simplicity of this short grammar disguises how difficult it was to originally write it. I suspect this because I see this arithmetic example in numerous places and pretty much identically expressed. It is a marvelous example of sophisticated simplicity, but a pattern that isn't used that often because of its sophistication requires a lot of thought and planning and in depth understanding of how all the different components function. And let's admit it, most of us just need to get the job done and don't really have the time (and willingness) to invest in really elegant solutions.
+
+Next, we'll look at NodeScopes and State Diagrams
+
+//NOTE:   Nelson, include the thought that nesting the calls works like nested switch statements.
