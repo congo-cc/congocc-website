@@ -1,10 +1,3 @@
-title=README.md
-date=2022-04-30
-author=Nelson Chamberlain
-type=post
-tags=readme
-status=draft
-~~~~~~
 # congocc-website
 A static website dedicated to all things CongoCC, including the parser generators, multiple programming language parsing, an updated FreeMarker template system, and more. 
 
@@ -27,12 +20,12 @@ JBake uses default properties to control many behaviors. These defaults can be o
 ### Some JBake Requirements
 JBake requires a "header" section that includes: author, date, jbake-type, jbake-tags, jbake-status. These should go on separate lines WITHOUT blank lines separating them. Blank lines cause JBake to NOT be recognize the asciidoc as a web page/post and to NOT generate any html output.
 
-JBake also requires that the assets, output, and template directories be located in the same directory as the content directory (which contains the asciidoc pages/posts). This requirement means that .gitignore file must be updated so it will ignore these folders and since .gitignore is also tracked under git, any time it is updated, it needs to get pushed to the repository. 
+JBake also requires that the assets, output, and template directories be located in the same directory as the content directory (which contains the asciidoc pages/posts). This requirement means that .gitignore file must be updated so it properly ignores any folders that shouldn't be included in the repository. And because .gitignore is also tracked under git, any time it is updated, it needs to get pushed to the repository. 
 
-If we make significant changes to the FreeMarker templates, the template directory may also be kept in the repository so we don't have to reinvent the wheel if the templates get crunched. And we might want to upload all these "support" directories to the repository since they are less than 1MB and that way one could download the complete build environment and regenerate the website (after installing JBake executable).
+Currently, .gitignore is set to include the templates folders so any changes to them will be kept in the repository. And the assets folder is also being included in the repository because I had to rename the Bootstrap.js & .css files because Chrome kept replacing them with latest version and screwing up the formatting. Eventually we'll replace these bootstrap-related files with later versions of them so we'll have to include them in repository anyway. Shouldn't be an issue since together they are are less than 1MB in size.
 
 ### Bootstrap
-The bootstrap.js library provided with JBake was last updated in 2014 (v3.1.1) and the current release is 5.1-ish. Significant capabilities have been added (a photo carousel, accordions, and a variety of other components, svg icons, etc). Need to see if we can update JBake to use latest version of Bootstrap.
+The bootstrap.js library provided with JBake was last updated in 2014 (v3.1.1) and the current release is 5.1-ish. Significant capabilities have been added (a photo carousel, accordions, and a variety of other components, svg icons, etc). Need to see if we can update JBake to use latest version of Bootstrap. During testing, the baked appearance of webpages showed differently in Chrome and Edge than in Firefox which seemed to be caused by Chrome recognizing that Bootstrap files were woefully out of date and kept replacing them with the latest versions which isn't compatible with older version. By renaming the bootstrap files to myBootstrap... Chrome was prevented from making these unrequested substitutions.
 
 ### jQuery
 The jQuery.js library included with JBake is version 1.11.1 while the current version is 3.6.0. Not sure what changes have happened since v1.11.1 was released but it's probably been a while and one would assume that numerous safety & security fixes have been included.
