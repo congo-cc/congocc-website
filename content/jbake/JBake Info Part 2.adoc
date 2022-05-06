@@ -1,0 +1,99 @@
+:!jbake:
+ifdef::jbake[]
+= Learning JBake - Part 2
+Nelson Chamberlain
+2022-05-05
+:jbake-type: post
+:jbake-tags: jbake
+:jbake-status: draft
+endif::[]
+
+ifndef::jbake[]
+= Notes and Comments on JBake - 2
+endif::[]
+
+== Using JBake and congocc-website Repository Locally
+When you clone the congocc website from github, the repository is automatically put into a folder named congocc-website. I think this folder name can be changed without causing problems, but that's another issue. For right now, the default folder name is good enough. 
+
+Select a good location on your *local computer* for the repository. It will need to be conveniently accessible to both JBake and your chosen Asciidoc editor. On my local comuter, I have JBAKE_HOME set to D:\jbake and all congocc related stuff on D:\congocc. Inside congocc folder, I cloned the repository as follows:
+
+----
+git clone https://github.com/congo-cc/congocc-website.git
+----
+
+When the repository is cloned, you end up with the same three folders that are created when you initialize JBake (jbake -i command):
+
+*   assets - contains folders for css, fonts, img, and js. The complete contents of all the subfolders are tracked/managed in the repository rather than trying to separate the modified and unmodified files
+*   content - contains all of the asciidoc files that are baked into the website
+*   templates - contains all the FreeMarker templates that are used to generate the components of the web pages (header, footer, etc). All of the templates are tracked/managed in the repository rather than trying to manage the modified and unmodified files
+
+The jbake.properties file is also cloned into your repository folder, just like in the initialized JBake layout. In other words, the repository should have the same folder structure and contents as a newly initialized JBake installation, except that for the updates that were saved to the repository.
+
+The cloned repository also adds two files:
+
+*   README.md - contains lots of info about using JBake and using conditionals in asciidocs to produce different outputs (websites vs pdfs). 
+*   .gitignore - a hidden file that contains a list of folders and/or files that should NOT be tracked/managed in the repository.
+
+=== The .gitignore File
+
+On my local computer, in the congocc-website folder, I created a folder named saved that holds the bits and pieces that I might or might not use going forward. Since these items might never get used in the website, there's no point in having them tracked in the web. So .gitignore lists the saved/ folder so its contents won't end up in the repository unless they are actually used in the website.
+
+When JBake actually bakes the website, the default location for the .html and other files is the output folder. Since these files are regenerated every time jbake -b is run, there's no point in tracking/managing these files in the repository, especially since JBake overwrites all of the output files every time it bakes the website, which would cause every one of the website pages to be updated in the master website, even if there was no other change than their file dates.
+
+JBake has an option to run its database tool, orientdb, in either the memory mode or in the persistent mode. The default mode is memory mode and *nothing* needs to be set to achieve this mode. The mode can be set to persist by adding db.store=plocal to the jbake.properties file. If orientdb is set to persist (non-memory) then a new folder named cache will be added to the repository folder. Since the persistent mode stores transient data in the cache folder that has no long term value, this folder is also listed in .gitignore. There doesn't seem to be any issues with telling git to ignore non-existent folders.
+
+If you add other folders to the congocc-website that you don't want to save in the repository, be sure to add the folder to .gitignore. If you *do* want to save the files to the repository but you don't want them published on the website, either don't add the JBake header lines to those files or use a custom attribute to surround the header lines so that the files aren't baked. See below on the section on header lines, custom attributes, and conditionals.
+
+=== The .jbakeignore File
+
+JBake reserves the filename of .jbakeignore for use in controlling what files/folders are rendered/copied the the website. Unfortunately, it is NOT a list of files/folders to skip; instead it is a flag that is used to mark which folders to NOT render/bake. Its usage is as follows:
+
+*   contents folder or subfolders: any source files that appear in the same folder as the .jbakeignore file (or subfolders below it) are skipped.
+*   assets folder or subfolders: any resources that appear in the same folder as the .jbakeignore file (or subfolders below it) are not copied to the site (apparently used for rendering but NOT copied to output folder to be used by website).
+*   any other folders that contain .jbakeignore have the flag file ignored
+
+=== Bringing It All Together Locally
+
+So after cloning the congocc-website repository, a git status command should show that everything is up to date. Point your asciidoc editor to a file that you want to add or update in the assets, content, or templates folders and make the necessary changes or additions. 
+
+After saving the changes, if you repeat the git status command, it should list any files that you have modified or added. It all should work like working on any files (code, web, template) that are part of a repository. 
+
+When changes have been made to tracked files, you should bake your website to verify that the changes are achieving the effects that you want. You can use the jbake -b command to rebuild the website and then view the files in the file manager *OR* you can use the jbake -b -s command to rebuild the website and then view the website at http://localhost:8820. 
+
+When a reasonable amount or set of changes have been made and tested, the changes should be committed and pushed up to the repository, just like working on any other repository.
+
+== JBake and the Website Repository on the Server
+
+JBake has been installed in ~/nelson/jbake and JBAKE_HOME has been set in his profile. JBake hasn't been added to his path yet because it's been easy to just call the bin/jbake shell script from JBAKE_HOME. The jbake - i and jbake -b commands have both been successfully run and their results match the locally generated files and results.
+
+I haven't tried jbake -b -s because I am uncertain what the results will be if nginx is serving on port 80 and Jetty is serving on port 8820. And someplace in there I suspect a hole in the congocc server firewall to allow JBaked files to be served. I tried the jbake -b -s command and it didn't work.
+
+I suspect a better process would be to set up a subdomain like testing.congocc.org and then copy any generated files to the subdomain and then serve them from the docroot there. What would be even slicker would be if the testing docroot could be set to ~/nelson/jbake/congocc-website/output so it would automatically serve the most recently baked website files. 
+
+=== JBake and Repository Runs
+
+The congocc-website was cloned into ~/nelson/jbake/congocc-website and jbake -b was run and it seemed to work fine. Checked a few of the files in the output folder and got the expected results.
+
+Changed the ownership of the output folder using:
+
+----
+sudo chown -R root:root .
+----
+
+Then copied the output folder to docroot of congcc.org using:
+
+----
+sudo cp -R . /var/www/html
+----
+
+Copy (cp) overwrites existing files automatically so there was no need to use a command to force the overwriting. The congocc.org website is now serving the latest version of the files from the repository. The easiest way to verify that was to verify that the RSS menu option was removed from the navigation bar.
+
+Just used my iPhone and Safari to access congocc.org and it seemed to work OK. The nav bar was collapsed into a button at top right. Tapping on the button brought up the menu options.
+
+== JBake Header Lines, Custom Attributes, and Conditionals
+
+
+== JBake is Out of Date
+
+
+

@@ -1,0 +1,119 @@
+:!jbake:
+ifdef::jbake[]
+= Learning JBake - Part 1
+Nelson Chamberlain
+2022-05-05
+:jbake-type: post
+:jbake-tags: jbake
+:jbake-status: draft
+endif::[]
+
+ifndef::jbake[]
+= Notes and Comments on JBake - 1
+endif::[]
+
+== Getting Started
+.   Download JBake binaries from github. 
+.   Unzip or untar the package into a convenient location
+..  It creates a folder named jbake-<version>-bin
+..  Inside that folder are two folders and example zip files
+... bin - contains 2 files, 1 bat file for windows & 1 shell script for *nix systems
+... lib - contains 100+ jar files, approx 75MB of files. This folder contains the bulk of the files downloaded. By comparison, the rest of the files are almost nothing
+.   Set JBAKE_HOME to the folder that contains the jbake-<version>-bin folder
+.   Add jbake bin folder to path, such as %JBAKE_HOME%/bin
+.   Open a terminal window and type, the following, without any options or parameters
+
+----
+    jbake 
+----
+
+[start = 6]
+.   If everything is setup correctly, it will display the help screen
+.   Create a new folder in an appropriate location and change to it
+.   Initialize JBake in this new folder to use FreeMarkeer templates (other templates available by selecting the appropriate option). Type in the following command:
+
+----
+    jbake -i
+----
+
+[start=9]
+.   jbake will run briefly and produce the following folder structure
+..  assets - contains four more folders
+... css - contains the basic unmodified css files
+... fonts - contains the glyphicons-halfling font files
+... img - contains a single jpg as an example
+... js - contains the javascript libraries (out of date)
+..  content - contains the actual docs tat will get published
+..  template - contains all of the freemarker templates used to generate the basic website
+.   Initialization also generates the jbake.properties file. This file can be used to override the default.properties that are contained somewhere inside the jar files.
+..  The first setting is site.host=http://jbake.org. This setting is only used when baking - not when serving files. This setting needs to be changed to https://congocc.org when actually working on the server or on final versions that will be uploaded to server. This value is used by the sitemap.xml file and feed.xml files. 
+..  Don't add a site.host=http://localhost:8820 (and comment out the other site.host) - localhost:8820 is meant for local webserver testing on your local computer *only* and is already set in default.properties file. Plus, if you set site.host to localhost:8820, it will change the server address in the sitemap.xml and feed.xml files.
+
+== Running JBake
+=== Baking Only Mode
+
+.   From the JBAKE_HOME folder, "bake" your blogs by running jbake as follows:
+
+----
+jbake -b
+----
+
+[start=2]
+.   JBake will run for a little while, generating a ton of progress and info messages.
+.   Assuming no error messages or major breakdowns, JBake will finish running without complaints
+.   A new folder should have been added named output that contains all of the static files and folders that will need to be put into the docroot of the webserver.
+
+==== Notes and Comments
+
+*   All of the blog files in the output came from the content/blog/2013 folder. These are example blogs.
+*   Asciidoc files need to the jbake header lines at the beginning of them - see below for more details on the jbake header lines.
+*   JBake will attempt to "bake" any files that were put anywhere inside the content folder.
+*   Every time jbake -b runs, it regenerates the whole website, so any changed files will get picked up and processed. No need to tell it which ones were changed.
+*   If you remove a file from a content folder, any generated files matching the deleted file that were put into the output folder *will remain in the output folder*. In other words, it DOESN'T DO A CLEAN, it just overwrites any previously generated versions. If you have removed any files, you should periodically do a manual clean of the output folder by deleting everything in that folder.
+
+==== Baking Options
+
+You can specify a different folder name and location for the asciidoc content files that JBAKE will bake as follows:
+
+----
+jbake -b <content-folder-name-and-path>
+----
+
+JBake will crawl thru this folder and any subfolders and generate web pages for any files of the appropriate type which also contain jbake header info.
+
+*   The name and location of the asciidoc content folder can be put into the jbake.properties file. Refer to the default.properties file to get the exact property name.
+*   If the content folder is specifed, the output folder will be created under the specified content folder, not put into the default output folder.
+*   If you want to specify the folder where the output content will go, it must follow the specified content folder name, as follows:
+
+----
+jbake -b <content-folder-name-and-path> <output-folder-name-and-path>
+----
+
+*   The name and location of the output folder can be put into the jbake.properties file. Refer to the default.properties file to get the exact property name.
+*   See Part 2 of this doc for more info on content and output folders when working with the congocc-website repository.
+
+=== Server Mode
+
+JBake can launch a Jetty server on your local computer so you can see how the baked pages look in the browser(s) of you choice. Use the following command:
+
+----
+jbake -s
+----
+
+JBake runs and eventually annouces that JettyServer is serving contents.  Point your browser to localhost:8820 and the baked pages will show in your browser. This is a great convenience to verify that the changes that you made to style and appearance of the website appear as you expected.
+
+Changes that you make to the assets and to the templates folders will also cause JBake to run and regenerate all of your pages. Typically rebuilding the this website has taken only a few seconds but as the website grows it will take longer.
+
+==== Notes and Comments on Server Mode
+
+*   You can combine the baking and serving options as follows:
+
+----
+jbake -b -s
+----
+
+*   The -b -s option is a great way to get immediate feedback on the effects of any changes that you make
+*   Running in the server mode updates the server info contained in the sitemap.xml file and the feed.xml file.
+*   Probably have JBake add the robots file that tells any web crawlers about any special conditions or requirements when crawling the website. Probably don't want to tell them NOT to track.
+*   Probably should add SEO keywords etc to help congocc rank higher in search engines.
+*   We should probably consider having one of those annoying cookie warnings popup - may be legal requirement for EU if servier is physically located in EU territory.
