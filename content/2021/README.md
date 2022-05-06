@@ -1,9 +1,1 @@
-title=content/2021/README.md
-date=2022-04-30
-author=Nelson Chamberlain
-type=post
-tags=readme
-status=draft
-~~~~~~
-
 Note that the author field must be filled in or there will be an FAIL reported on the jbake/jetty screen when this file is saved and no output will be generated. The status of Draft does NOT prevent this file from being converted into an html page but it will include the word "draft" in the name of this file.

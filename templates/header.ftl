@@ -8,7 +8,7 @@
     <meta name="author" content="">
     <meta name="keywords" content="">
     <meta name="generator" content="JBake">
-    <link rel="icon" type="image/png" href="CongoLogoSquare64.png">
+    <link rel="icon" type="image/png" href="/CongoLogoSquare64.png">
     <!-- Le styles -->
     <link href="<#if (content.rootpath)??>${content.rootpath}<#else></#if>css/myBootstrap.min.css" rel="stylesheet">
     <link href="<#if (content.rootpath)??>${content.rootpath}<#else></#if>css/asciidoctor.css" rel="stylesheet">
