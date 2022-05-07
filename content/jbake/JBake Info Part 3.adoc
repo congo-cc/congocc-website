@@ -1,0 +1,68 @@
+:!jbake:
+ifdef::jbake[]
+= Learning JBake - Part 3
+Nelson Chamberlain
+2022-05-05
+:jbake-type: post
+:jbake-tags: jbake
+:jbake-status: draft
+endif::[]
+
+ifndef::jbake[]
+= Notes and Comments on JBake - 3
+endif::[]
+
+== JBake is Out of Date
+
+JBake hasn't really been updated since 2014. About one year ago, a release candidate was released for review and nothing much seems to have happened since. The proposed changes would advance the version from v2.6.7 to v2.7.
+
+=== Bootstrap Issues
+
+This version of JBake uses Bootstrap v3.1.1 which bootstrap.org no longer supports. Bootstrap does offer v2.x and v3.3 and v3.4 as well as many v4.x and 5.x but not 3.1.1
+
+The version of Bootstrap included with JBake caused an interesting problem. I tried replacing the old bootstrap.js/.css with the latest versions and that caused some of the formatting to fail and the dropdown menu option to fail so I reverted to the original versions. And that worked fine in FireFox but didn't work for Chrome and Edge (based on Chrome), which both showed the previously mentioned problems.
+
+I had previously renamed the .js/.css files and that fixed the problem in Edge but Chrome still had issues. I removed the latest .js/.css file from the assets folders completely but Chrome still showed formatting/dropdown issues. Inspecting the values in Chrome, it was still somehow finding the latest version of Bootstrap.
+
+To resolve this issue, I had to rename bootstrap.js/.css to myBootstrap.js/.css and specifically call out those filenames to get the behavior of all three browsers to be the same. That's why they are renamed in the repository.
+
+The real issue with Bootstrap being out of date is that all of the really interesting features were added to the 4.x and 5.x lines. All the really modern things, like picture carousels, flexgrid layout, accordians, etc, etc, etc. Bootstrap wasa designed to be a "responsive" library, so it will gracefully adjust its display to meet the requirements of the device that it is being viewed up, phone, tablet, desktop browser, etc. 
+
+=== Bootstrap Plans
+
+So once we get the congocc.org website a little more stabilized, we'll begin exploring the latest version of Bootstrap. We'll start by merging the Blog Template offered in Bootstrap v5 with the FreeMarker templates. And if we can get that working, we'll work on replacing the oversized FeaturePost with a carousel of images that show snippets of congocc grammars, state diagrams, code snippets, etc. Might intermix with natural images of the congo rainforest that fade into parse trees, etc.
+
+Using the Bootstrap blog template further, we'll want two sticky blogs right under the carousel: "What is CongoCC?" and "Getting Started with CongoCC". These two will always be at the top and available.
+
+Below these two blogs will be the list of latest blogs with just their abbreviated portion (the lede for each blog) shown with a link to the full blog. On the right will be the Archives column. And if I can figure out how to take what JBake produces and turn it into something useful, a list of tags (categories?) that can be clicked on to filter the list of blogs to those matching the selected tag.
+
+=== Bootstrap Changes in Latest Version
+
+The latest version of Bootstrap has dropped jQuery, so the jQuery.js lib provided with JBake can be dropped, as well as any of the potential security issues that may have been identified with older jQuery versions. 
+
+The latest version also has a popover system, Popper v2.x that also provides tooltip types of message. It also provides a "Sass" compiler, which provides enhanced features related to stylesheets and then compiles them down into standard .css files.
+
+The latest version of Bootstrap also mentions dropping support for older browsers, such as IE 10 or 11, etc. The provided HTML5shiv.js provides support for IE 6-9, Safari 4.x and FireFox 3.x. How much do we really want to support these older browsers? How likely is it that our target audience (developers) will be running these older browsers?
+
+Default JBake package also includes base.css and asciidoctor.css so changing to newer Bootstrap version may conflict with these older .css files. Asciidoctor.css also imports the font-awesome.css stylesheet which brings in a bunch of icons. Note that the version of font-awesome is 3.2.0 while the current version is 6.1.1. Bootstrap 5 now includes approx 1600 icons. Might be better to stay within the same product eco-system and install/use the bootstrap icons. The Pro version of Font-Awesome is $99/year.
+
+== Database Issues
+
+The database used for JBake is Orient DB (https://orientdb.org) which seems like a much bigger solution than needed for the given problem space. The Getting Started section describes OrientDB as a "multi-modal database ...its infinite power and flexibility." It calls itself a NoSQL database which they define to mean "Not Only SQL". Later they state, "The goal of Orient Technologies in building OrientDB was to create a robust, highly scalable database that can perform optimally in the widest possible set of use cases."
+
+Sort of reminds me of the products that were developed to handle 1,000 hits per second when realistically they could expect 100 hits per hour. Sort of like bringing an assault rifle to a duck hunt.
+
+After downloading the community edition of OrientDB, I found very little worked the way that it was described in the documentation. Users called Reader and Writer were supposed to automatically generated but they weren't. Certain user names and passwords were supposed to be setup but they weren't but instead produced warnings to NOT use them (but no hints what to use). A list of a dozen public "cloud" databases didn't produce a single usable example to learn from.
+
+OrientDB talks about edges and vertices without a lot of explanation how those relate to traditional SQL dbs. It talks about creating clusters, which seem to be created one per core of the CPU so SQL operations can be performed in parallel. It sounds really innovative and like a massively oversized solution for the relatively simple db support that most websites require.
+
+However, it is functional and certainly fast enough so there is no reason to change it. Still, I'd like to be able to see what is actually being stored in the db without having to take a week off for training on a one-of-a-kind product.
+
+== Font Issues
+
+The existing version of bootstrap defines the font for the body as "Helvetica Neue", Helvetica, Arial, sans-serif. Much of the world has moved onto using Google Fonts for websites because they are high quality and commonly available. The disadvantage of Google fonts is that they can't be embedded in PDF documents the way other fonts can be embedded. Without embedding the fonts in the PDFs, they could come out formatted & paginated differently depending on the fonts available on the machine that views or prints the PDF. 
+
+When we get to this issue, I suspect that the answer will be using the custom attributes of jbake and pdf-doc to control which fonts are selected. When pdf-doc is defined, an embeddable font (probably a TrueType font) will be specified and embedded so the PDF will always look the same as the master. And when jbake is defined, Google fonts will be selected. And if Google starts charging for the fonts, we'll find the next most commonly used fonts that are free.
+
+== Other Issues - will be added as required
+

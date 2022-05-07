@@ -64,17 +64,17 @@ When a reasonable amount or set of changes have been made and tested, the change
 
 == JBake and the Website Repository on the Server
 
-JBake has been installed in ~/nelson/jbake and JBAKE_HOME has been set in his profile. JBake hasn't been added to his path yet because it's been easy to just call the bin/jbake shell script from JBAKE_HOME. The jbake - i and jbake -b commands have both been successfully run and their results match the locally generated files and results.
+JBake has been installed in ~/nelson/jbake and JBAKE_HOME has been set in his profile. JBake hasn't been added to his path yet because it's been easy enough to just call the bin/jbake shell script from JBAKE_HOME. The jbake - i and jbake -b commands have both been successfully run and their results match the locally generated files and results.
 
-I haven't tried jbake -b -s because I am uncertain what the results will be if nginx is serving on port 80 and Jetty is serving on port 8820. And someplace in there I suspect a hole in the congocc server firewall to allow JBaked files to be served. I tried the jbake -b -s command and it didn't work.
+I tried jbake -b -s but was unable to reach congocc.org:8820 with a browser. I suspect the firewall app needs to be told to allow web serving at port 8820 because that's where Jetty wants to serve it. It could also be that ubuntu doesn't like the "localhost" setting used by JBake. 
 
-I suspect a better process would be to set up a subdomain like testing.congocc.org and then copy any generated files to the subdomain and then serve them from the docroot there. What would be even slicker would be if the testing docroot could be set to ~/nelson/jbake/congocc-website/output so it would automatically serve the most recently baked website files. 
+I suspect a better process than using Jetty would be to set up a subdomain like testing.congocc.org and then copy any generated files to the subdomain and then serve them from the docroot there. What would be even slicker would be if the testing docroot could be set to ~/nelson/jbake/congocc-website/output so it would automatically serve the most recently baked website files. 
 
 === JBake and Repository Runs
 
-The congocc-website was cloned into ~/nelson/jbake/congocc-website and jbake -b was run and it seemed to work fine. Checked a few of the files in the output folder and got the expected results.
+The congocc-website repository was cloned into ~/nelson/jbake/congocc-website and jbake -b was run and it seemed to work fine. Used nano to open a few of the files in the output folder and got the expected results.
 
-Changed the ownership of the output folder using:
+Did `cd output` and then changed the ownership of the files in the output folder using:
 
 ----
 sudo chown -R root:root .
@@ -86,14 +86,53 @@ Then copied the output folder to docroot of congcc.org using:
 sudo cp -R . /var/www/html
 ----
 
-Copy (cp) overwrites existing files automatically so there was no need to use a command to force the overwriting. The congocc.org website is now serving the latest version of the files from the repository. The easiest way to verify that was to verify that the RSS menu option was removed from the navigation bar.
+Copy (cp) overwrites existing files automatically so there was no need to use a command to force the overwriting. The congocc.org website is now serving the latest version of the files from the repository. The easiest way to verify that was to verify that the RSS menu option was removed from the navigation bar. Used FireFox and Chrome to view congocc.org and both contain the correct contents
 
 Just used my iPhone and Safari to access congocc.org and it seemed to work OK. The nav bar was collapsed into a button at top right. Tapping on the button brought up the menu options.
 
+=== Production Setup
+
+Based on current understanding, the setup will be something like:
+
+.   JBake and congocc-website repository will need to be setup someplace accessible by the root user and JBake put onto its path. 
+.   Users will clone the congocc-website repository to their local computer and push any changes/additions to the repository using normal git procedures
+.   A website update process will get run, triggered either by repository change being detected or based on time that includes:
+..  Getting latest contents of the congocc-website repository
+..  Running JBake against the copy of the repository
+..  Getting the contents of the output folder copied to /var/www/html
+
+WARNING: Setting the destination.folder in the jbake.properties file doesn't seem to work. A brief reading of the JBake source shows that it uses a org.apache.commons.configuration.compositeConfigure which uses an "anti-inheritance" pattern; the first definition of a property added to the compositeConfig is the one that is used; any later settings to that property are NOT used. *IF* jbake.properties file is added second then user settings would never get set. Other things work - it is inconceivable that this is the problem. And yet, setting the destination.folder doesn't seem to work!!
+
+Until the website get's huge, it might be simplest to just run JBake once a day, whether or not any changes have been made. JBake works on a similar principle; it 'bakes' every file every time it runs, whether or not the files have been changed. 
+
 == JBake Header Lines, Custom Attributes, and Conditionals
 
+Asciidocs require JBake header lines in every file that is going to be baked for the website. ALL lines in the JBake header must be together - no blank lines are allowed or JBake will assume this is NOT a valid header and will NOT produce any output.
 
-== JBake is Out of Date
+----
+:!jbake: <1>
+ifdef::jbake[] <2>
+= Learning JBake - Part 2 <3>
+Nelson Chamberlain <4>
+2022-05-05 <5>
+:jbake-type: post <6>
+:jbake-tags: jbake <7>
+:jbake-status: draft <8>
+endif::[] <9>
 
-
-
+ifndef::jbake[] <10>
+= Notes and Comments on JBake - 2 <11>
+endif::[] <12>
+----
+<1> custom attribute defined in this file. In this definition, jbake is also 'inactivated' by the bang symbol.
+<2> if jbake attribute was defined, then the following header lines would have been 'visible'. JBake would then have seen this document as one that needed to be 'baked' and converted it into an html file 
+<3> JBake requires a top level heading (single '=' level) to be used as the post/page title. If it doesn't see this, it won't bake the file into an html page
+<4> Author's name. I don't know how it recognizes this as a name without associating it with an attribute.
+<5> the desired publication date
+<6> custom JBake attribute. Legal values are post and page
+<7> custom JBake attribute. Comma separated list of tags to associate with this page. Each item in list will produce an html page associated with that tag. If multiple asciidocs include that tag, they will all be listed on that html page.
+<8> custom JBake attribute. Legal values are draft and published.
+<9> endif for the ifdef above. The name of the ifdef value can optionally be included between the double colons and the square brackets
+<10> If-NOT-Defined. Reciprocal of the ifdef block above. This will be more useful when we are producing pdf docs because those want to have the top level (single '=' level) value set for the book title and NOT the page title and asciidoctor-pdf will complain/fail if it finds a 'book title' value in one of the other files. Note also that since this line isn't part of the JBake header lines it can have a blank line above it.
+<11> Added a title just for some content. If we were producing a pdf book using this file, this would need to be a '==' or lower level heading or asciidoctor-pdf will complain.
+<12> Closing endif for the ifndef. Attribute name is optional but can be included between the double-colons and the square brackets.
