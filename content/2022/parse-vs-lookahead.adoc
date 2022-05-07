@@ -13,7 +13,7 @@ Jonathan Revusky
 :jbake-tags: announcements, roadmap
 :jbake-status: published
 endif::[]
-== Parsing vs. Scanning
+== Parsing vs. Scanning Ahead
 
 (((Parsing vs Scanning)))
 Consider the following JavaCC construct:
