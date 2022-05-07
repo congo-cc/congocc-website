@@ -1,0 +1,72 @@
+:!jbake:
+ifdef::jbake[]
+= Diagrams in AsciiDoc
+Nelson Chamberlain
+2022-05-06
+:jbake-type: post
+:jbake-tags: jbake
+:jbake-status: published
+endif::[]
+
+== DITAA Block Diagram
+
+Block diagrams rendered in plain text characters on screen
+
+[ditaa, target="asciidoc-diagram", format=png]
+....
+      +--------------+         +------------+
+      |              |         |  output    |
+      |  this is a   |-------->|   img      |
+      |  diagram     |         |            |
+      +----+---------+         +------------+
+           |                         ^
+           |    lots of work         |
+           +----------+--------------+
+                      |
+                      |
+                      |
+                      v
+            /---------------------\
+            |                     |
+            |       another       |  Rounded corners
+            |         box         |  on this block
+            |                     |
+            \---------------------/
+....
+
+The ditaa declaration block defines the type of the doc, the target (the name of the output file), and the format.
+
+== PlantUml Diagram
+
+UML diagrams rendered from declarations in text
+
+[plantuml, target=diagram-classes, format=png]
+....
+class BlockProcessor
+class DiagramBlock
+class DitaaBlock
+class PlantUmlBlock
+
+BlockProcessor <|-- DiagramBlock
+DiagramBlock <|-- DitaaBlock
+DiagramBlock <|-- PlantUmlBlock
+....
+
+== Syntrax Diagram
+
+Railroad diagrams rendered by jsyntrax using Grooby-based specification language (line(), loop(), stack(), etc).
+
+[syntrax, target=railroad-diagram, format=png]
+....
+jsyntrax(opt('A', 'B', 'C'));
+....
+
+[syntrax, target=indentstack-diagram, format=png]
+....
+jsyntrax(indentstack(10,
+  line(opt('-'), choice('0', line('1-9', loop(None, '0-9'))),
+    opt('.', loop('0-9', None))),
+  line(opt(choice('e', 'E'), choice(None, '+', '-'), loop('0-9', None)))
+));
+....
+
