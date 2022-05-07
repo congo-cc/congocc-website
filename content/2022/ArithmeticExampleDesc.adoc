@@ -14,7 +14,7 @@ endif::[]
 
 As developers, we are trained from the beginning to create simple straightforward programs. Programs with clear logic and structure, with well-defined beginnings and exits. Simple good - convoluted bad.
 
-JavaCC, as well as most other parser & compiler generators, emphasize a different kind of logic because they need to handle statements and expressions of arbitrary complexity. With most Java applications, we can manage and structure most situations using loops (for, while, etc) and iterating through lists. We can arrange or manage the content being processed so they fit looping and list constructs, even if the logic becomes extremely complicated at times.
+CongoCC, as well as most other parser & compiler generators, emphasize a different kind of logic because they need to handle statements and expressions of arbitrary complexity. With most Java applications, we can manage and structure most situations using loops (for, while, etc) and iterating through lists. We can arrange or manage the content being processed so they fit looping and list constructs, even if the logic becomes extremely complicated at times.
 
 The arithmetic grammars that come with JavaCC21 (examples/arithmetic/Arithmetic1/2.javacc) can generate a parser that can process arithmetic statements of arbitrary complexity with nesting and grouping of items while observing the generally accepted order of operation or precedence rules. The Arithmetic2.javacc grammar includes the Arithmetic1 grammar and adds the ability to calculate the results of the arithmetic statement that you enter, so this commentary will use that one.
 
