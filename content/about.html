@@ -8,30 +8,31 @@ status=published
 <!-- reference to image using relative path stored along side content files -->
 <img src="about/CongoLogo2.png" alt="Congo Logo" title="CongoCC"/><br/><br />
 
-<p>The CongoCC project began in early 2022 as a rebranding of the JavaCC 21 project, which itself was a forking and nearly 100% rewrite of the earlier JavaCC project. As part of the rebranding, the CC suffix now means "code-generation components" instead of the more traditional meaning of "compiler compiler". JavaCC, and it's various forks and incarnations, have always generated the code for parsers but not for compilers. The parsers that were generated <strong>could</strong> be extended by knowledgeable users to generate the code to create a compiler but this capability was <strong>NOT</strong> a basic or core capability of JavaCC.</p>
+<p>The CongoCC project began in early 2022 as a rebranding of the JavaCC 21 project, which itself was a ground-up rewrite of the earlier JavaCC project, originally 
+    developed at Sun Microsystems in the 1990's.</p>
 <p>Here are a few highlights in the history of JavaCC, FreeCC, and CongoCC:</p>
 <ul>
     <li><strong>1996: </strong>JavaCC developed and released internally at Sun Microsystems and at a startup company Metamata. Based on Java v1.</li>
-    <li><strong>1997: </strong> JJTree preprocessor added to JavaCC codebase, implemented by a different person (Rob Duncan) than those who implemented on the original JavaCC</li>
+    <li><strong>1997: </strong> JJTree preprocessor added to JavaCC codebase, implemented by a different person (Rob Duncan) than those who developed the original JavaCC</li>
     <li><strong>1998: </strong>JavaCC acquired by Webgain but was still available for free download</li>
     <li><strong>2001: </strong>Webgain falls victim to 2001 dot-com crash and JavaCC becomes an asset of Sun Microsystems again</li>
-    <li><strong>2003: </strong>Sun Microsystems releases JavaCC (and JJTree) as open source.</li>
+    <li><strong>2003: </strong>To much fanfare, Sun Microsystems releases JavaCC (and JJTree) as open source.</li>
     <li><strong>2008: </strong>JavaCC was forked as the FreeCC project. FreeCC leveraged the FreeMarker template engine (that also was based on JavaCC) to simplify and amplify the code generation capabilities of FreeCC.</li>
         <ul>
             <li>Introduced INCLUDE statement that allows a large grammar to be broken up into multiple physical files</li>
             <li>Introduced INJECT statement in grammar files allow Java code to be added to any generated file. Inject statements can be added to grammar file close to where their relevant productions</li>
-            <li>FreeCC unified the JavaCC and JJTree preprocessor into a single tool, thus simplifying the workflow of a typical JavaCC-based project</li>
+            <li>FreeCC unified the JavaCC and JJTree preprocessor into a single tool, thus simplifying drastically the workflow of a typical JavaCC-based project</li>
             <li>Building an AST Tree is the default, though it can be turned off if desired</li>
         </ul>
     <li><strong>2009 - 2019: </strong>Development hiatus</li>
-    <li><strong>2020 - 2022 : </strong>Development resumes, now rebranded as JavaCC 21. Codebase is incrementally refactored and rewritten until almost all source code has been replaced. Changes and improvements include:
+    <li><strong>2020 - 2022 : </strong>Development resumes, now rebranded as JavaCC 21. As of May 2021, the codebase was completely rewritten. Changes and improvements include:
         <ul>
-            <li>Streamlined grammar syntax that removed a lot of empty punctuation marks</li>
-            <li>Preprocessor that implements #define/#undef/#if/#elif/#else/#endif in same way as C# preprocessor</li>
-            <li>Contextual predicates provide a way of checking whether we are at a given point in a parse</li>
+            <li><strong>Streamlined grammar syntax</strong> that removed a lot of the visual clutter in the legacy syntax. (The older syntax is still supported.)</li>
+            <li><strong>Preprocessor</strong> that implements #define/#undef/#if/#elif/#else/#endif in the same way as the C# preprocessor</li>
+            <li><strong>Contextual predicates</strong> provide a way of checking whether we are at a given point in a parse</li>
             <li>Improved lookahead capabilies available in new SCAN keyword, including the up-to-here marker =>||</li>
-            <li>Nested syntactic lookaheads have been fixed</li>
-            <li>Fault-tolerant parsing that incorporates heuristics for building the AST into the parser</li>
+            <li>Nested syntactic lookahead finally works!</li>
+            <li>Fault-tolerant parsing that incorporates heuristics for building an AST with "dirty" or "incomplete" Nodes</li>
             <li>ATTEMPT/RECOVER statement to replace try/catch blocks to produce more meaningful fallback or recovery actions when the attempt fails.</li>
             <li><strong>Python 3.10 grammar/parser</strong> available for your own projects</li>
             <li><strong>C# grammar/parser</strong> available for your own projects</li>
