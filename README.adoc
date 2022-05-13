@@ -124,10 +124,14 @@ Surround the custom attribute with single colons. For example
 To use this custom attribute
 
 ....
-ifdef::myattribute[]
+"ifdef::myattribute[]
 The conditional text goes in here and can continue as long as you want until the end block delimiter (endif::[] is reached
-endif::myattribute[]
+endif::myattribute[]"
 ....
+
+IMPORTANT: Ignore the quotation marks in the above example - the AsciiDoc 
+formatter was interpreting (and NOT displaying) the conditionals so NONE 
+of the three lines above were shown.
 
 The capitalization of the attribute in the ifdef statement doesn't have
 to match its capitalization when it was defined but for tidiness it
@@ -185,20 +189,24 @@ page, such as:
 And then down inside each web page to include in the book:
 
 ....
-ifdef::pdf-doc[]
+"ifdef::pdf-doc[]
 
 == Chapter title or === section title
 
-endif::[]
+endif::[]"
 
-ifndef::pdf-doc[]
+"ifndef::pdf-doc[]
 
 = Post or Page Title
 
 . . . . restof JBake header
 
-endif::[]
+endif::[]"
 ....
+
+IMPORTANT: Ignore the quotation marks in the above example - the AsciiDoc 
+formatter was interpreting (and NOT displaying) the conditionals so only 
+two of the seven above lines were shown.
 
 So when you generate the pdf, it sees the definition of pdf-doc and uses
 the correct level of indenture for the Chapter or Section titles and
