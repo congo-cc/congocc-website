@@ -1,0 +1,19 @@
+/* myjbake.css - put back any missing styles lost in bootstrap 5
+--------------------------------------------------------------- */
+
+/* missing pre styles */
+pre {
+    color: #333;
+    background-color: #f5f5f5;
+    border-width: 1px;
+    border-style: solid;
+    border-color: #ccc;
+    padding: 1em;
+}
+
+/* nav-bar touch-ups*/
+.bg-light {
+    border-width: 1px;
+    border-style: solid;
+    border-color: #e7e7e7;
+}

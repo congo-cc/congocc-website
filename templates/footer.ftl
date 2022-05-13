@@ -4,15 +4,11 @@
     
     <div id="footer">
       <div class="container">
-        <p class="muted credit">&copy; 2022 | Mixed with <a href="http://getmybootstrap.com/">Bootstrap</a> v3.1.1 | Baked with <a href="http://jbake.org">JBake ${version}</a></p>
+        <p class="muted credit">&copy; 2022 | Responsive with <a href="http://getbootstrap.com/">Bootstrap v5.1.3</a> | Baked with <a href="http://jbake.org">JBake ${version}+</a></p>
       </div>
     </div>
     
-    <!-- Le javascript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="<#if (content.rootpath)??>${content.rootpath}<#else></#if>js/jquery-1.11.1.min.js"></script>
-    <script src="<#if (content.rootpath)??>${content.rootpath}<#else></#if>js/myBootstrap.min.js"></script>
-    <script src="<#if (content.rootpath)??>${content.rootpath}<#else></#if>js/prettify.js"></script>
-    
+    <!-- Placed at the end of the document so the pages load faster - only one js req'd NEC 5/2022 -->
+    <script src="<#if (content.rootpath)??>${content.rootpath}<#else></#if>js/bootstrap.bundle.min.js"></script>
   </body>
+</html>

@@ -8,11 +8,14 @@ Nelson Chamberlain
 :jbake-status: published
 endif::[]
 
+These diagrams are most easily live previewed using AsciidocFX editor.
+
 == DITAA Block Diagram
 
 Block diagrams rendered in plain text characters on screen
 
 [ditaa, target="asciidoc-diagram", format=png]
+
 ....
       +--------------+         +------------+
       |              |         |  output    |
@@ -34,13 +37,13 @@ Block diagrams rendered in plain text characters on screen
             \---------------------/
 ....
 
-The ditaa declaration block defines the type of the doc, the target (the name of the output file), and the format.
+The ditaa declaration block defines the type of the doc, the target (the name of the output file), and the format (png or svg).
 
 == PlantUml Diagram
 
 UML diagrams rendered from declarations in text
 
-[plantuml, target=diagram-classes, format=png]
+[plantuml, target=diagram-classes, format=svg]
 ....
 class BlockProcessor
 class DiagramBlock
@@ -54,7 +57,7 @@ DiagramBlock <|-- PlantUmlBlock
 
 == Syntrax Diagram
 
-Railroad diagrams rendered by jsyntrax using Grooby-based specification language (line(), loop(), stack(), etc).
+Railroad diagrams rendered by jsyntrax using Groovy-based specification language (line(), loop(), stack(), etc). Same target and format options as before.
 
 [syntrax, target=railroad-diagram, format=png]
 ....
@@ -70,3 +73,16 @@ jsyntrax(indentstack(10,
 ));
 ....
 
+So far I have only been able to get these diagrams to render using the following commands, either:
+ 
+----
+asciidoctor -r asciidoctor-diagram <asciidoc-with-diagram-filename>
+----
+
+or
+
+----
+asciidoctor-diagram <asciidoc-with-diagram-filename>
+----
+
+I didn't have any luck generating these diagrams using JBake but I didn't try very hard because they aren't the most important thing to get done right now.

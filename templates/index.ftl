@@ -19,7 +19,7 @@
 	        </ul>
 	    <h3>The Congo Rainforest is the World's Second Largest Rainforest</h3>
 	    <p>The common link between the Congo and the resources available from CongoCC is the presence of trees - real, physical trees in the rainforest and AST trees in CongoCC parsers. As this website develops and evolves, more blogs will added that describe how the grammar files that you write are processed by the CongoCC jar file to generate compilable code that can be used to parse Java, Python, or C# text files.</p> 
-	    <p>To learn more about the history and evolution of the CongoCC project, click on the About menu option. The CongoCC repository and be cloned from https://github.com/congo-cc/</p>
+	    <p>To learn more about the history and evolution of the CongoCC project, click on the About menu option. The CongoCC repository can be cloned from https://github.com/congo-cc/</p>
 	    <h3 class="divider-h3">Individual Blogs Are Listed Below<h3>
 	</div>
 	<#list posts as post>
