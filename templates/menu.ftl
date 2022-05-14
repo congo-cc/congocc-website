@@ -37,6 +37,9 @@
             <li class="nav-item">
               <a class="nav-link active" href="<#if (content.rootpath)??>${content.rootpath}<#else></#if>archive.html">Archive</a>
             </li>
+            <li class="nav-item">
+              <a class="nav-link active" href="https://discuss.congocc.org/">Discussion Forum</a>
+            </li>
             <!-- Turn off disabled menu option for now
             <li class="nav-item">
               <a class="nav-link disabled">Disabled</a>
