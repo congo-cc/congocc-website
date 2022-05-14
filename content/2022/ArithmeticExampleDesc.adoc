@@ -16,9 +16,9 @@ As developers, we are trained from the beginning to create simple straightforwar
 
 CongoCC, as well as most other parser & compiler generators, emphasize a different kind of logic because they need to handle statements and expressions of arbitrary complexity. With most Java applications, we can manage and structure most situations using loops (for, while, etc) and iterating through lists. We can arrange or manage the content being processed so they fit looping and list constructs, even if the logic becomes extremely complicated at times.
 
-The arithmetic grammars that come with JavaCC21 (examples/arithmetic/Arithmetic1/2.javacc) can generate a parser that can process arithmetic statements of arbitrary complexity with nesting and grouping of items while observing the generally accepted order of operation or precedence rules. The Arithmetic2.javacc grammar includes the Arithmetic1 grammar and adds the ability to calculate the results of the arithmetic statement that you enter, so this commentary will use that one.
+The arithmetic grammars that come with CongoCC (examples/arithmetic/Arithmetic1/2.javacc) can generate a parser that can process arithmetic statements of arbitrary complexity with nesting and grouping of items while observing the generally accepted order of operation or precedence rules. The Arithmetic2.javacc grammar includes the Arithmetic1 grammar and adds the ability to calculate the results of the arithmetic statement that you enter, so this commentary will use that one.
 
-Not only do the Arithmetic grammars accomplish the complicated task of correctly processing arbitrary arithmetic statements in MDAS order, it does this while also using very few lines in the grammar by fully exploiting the recursive capabilities of JavaCC. The heart of the arithmetic capabilities are shown below:
+Not only do the Arithmetic grammars accomplish the complicated task of correctly processing arbitrary arithmetic statements in MDAS order, it does this while also using very few lines in the grammar by fully exploiting the recursive capabilities of CongoCC. The heart of the arithmetic capabilities are shown below:
 ----
  1    AdditiveExpression :
  2       MultiplicativeExpression
@@ -93,7 +93,7 @@ will your straightforward code handle that possibility?
 
 The snippet of grammar above demonstrates the power of recursion to handle any combination of grouping with parentheses in a comparatively small number of lines. So let's step through these grammar lines and see how they work.
 
-If you haven't done so already, from a command line/terminal window, change directory to the examples/arithmetic folder of the JavaCC21 repository that you downloaded/cloned and issue these commands:
+If you haven't done so already, from a command line/terminal window, change directory to the examples/arithmetic folder of the  CongoCC repository that you downloaded/cloned and issue these commands:
 ----
 java -jar <path to jarfile>/javacc-full.jar Arithmetic2.javacc
 javac ex2/*.java
