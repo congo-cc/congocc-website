@@ -26,7 +26,8 @@
   		<#if (post.status == "published")>
   			<a href="${post.uri}"><h1>${post.title}</h1></a>
   			<p>${post.date?string("dd MMMM yyyy")} by ${post.author}</p>
-  			<p>${post.body}</p>
+  			<#--  <p>${post.body}</p>  SHOWS whole blog - should show just start of blog -->
+			<#include "lede.ftl">  <#-- display first 1,000 chars of post -->
   		</#if>
   	</#list>
 	
