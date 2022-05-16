@@ -1,4 +1,0 @@
-Placeholder for blogs for 2022.
-The blog listed for 2022 came from an email from Jon that he thought would probably become a published blog post at some point.
-
-Note that the author field must be filled in or there will be an FAIL reported on the jbake/jetty screen when this file is saved and no output will be generated. The status of Draft does NOT prevent this file from being converted into an html page but it will include the word "draft" in the name of this file.
