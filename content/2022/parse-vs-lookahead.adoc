@@ -1,19 +1,22 @@
 //From an email from Jon - this attachment MAY be a future blog
 //[[ ]] is an inline anchor to make arbitrary content referenceable 
 //[[[]]] triple brackets are bibliographic references
-// Author's name is interpolated in template as ${post.author} in index.ftl
-// as as ${content.author} in page.ftl and post.ftl
 [[parsing-vs-scanning]]
-:jbake:
-ifdef::jbake[]
+ifdef::pdf-book[]
+== CongoCC Basics
+
+=== Parsing vs. Scanning 
+endif::pdf-book[]
+
+ifndef::pdf-book[]
 = CongoCC Basics
 Jonathan Revusky
 2022-02-01
 :jbake-type: post
 :jbake-tags: announcements, roadmap
 :jbake-status: published
-endif::[]
 == Parsing vs. Scanning 
+endif::[]
 
 (((Parsing vs Scanning)))
 Consider the following CongoCC construct:

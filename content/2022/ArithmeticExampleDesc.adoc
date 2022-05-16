@@ -1,16 +1,20 @@
 //comments examples/arithmetic/Arithmetic1.javacc
 // Author's name is interpolated in template as ${post.author} in index.ftl
 // as as ${content.author} in page.ftl and post.ftl
-:jbake:
-ifdef::jbake[]
+ifdef::pdf-book[]
+== Learning CongoCC by Examples
+=== Dissecting the Arithmetic Grammars
+endif::pdf-book[]
+
+ifndef::pdf-book[]
 = Learning CongoCC by Examples - Part 1
 Nelson Chamberlain
 2022-04-28
 :jbake-type: post
 :jbake-tags: learning
 :jbake-status: published
-endif::[]
 == Dissecting the Arithmetic Grammars
+endif::[]
 
 As developers, we are trained from the beginning to create simple straightforward programs. Programs with clear logic and structure, with well-defined beginnings and exits. Simple good - convoluted bad.
 

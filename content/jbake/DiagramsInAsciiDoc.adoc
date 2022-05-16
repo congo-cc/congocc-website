@@ -1,5 +1,6 @@
-:!jbake:
-ifdef::jbake[]
+//why isn't JBake rendering these diagrams?? Turn off JBake for right now
+:pdf-book:
+ifndef::pdf-book[]
 = Diagrams in AsciiDoc
 Nelson Chamberlain
 2022-05-06
