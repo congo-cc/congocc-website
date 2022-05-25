@@ -2,9 +2,12 @@
 	
 	<#include "menu.ftl">
 
-	<div class="page-header">
-		<h1>CongoCC Blog</h1>
-	</div>
+    <#include "carousel.ftl">
+
+	<#-- <div class="page-header">
+			<h1>CongoCC Blog</h1>
+		</div>
+	-->
 	<div class="blog-intro">
 	    <h2>Welcome to the Congo - CongoCC that is</h2>
 	    <p>CongoCC is an open-source resource site that provides <strong>C</strong>ode-generation <strong>C</strong>omponents, currently:</p>
