@@ -4,7 +4,6 @@
 ifdef::pdf-book[]
 === Dissecting the NodeScope Class Inside the Parser
 endif::pdf-book[]
-
 ifndef::pdf-book[]
 = Learning CongoCC by Examples - Part 2
 Nelson Chamberlain

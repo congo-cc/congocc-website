@@ -25,7 +25,7 @@
 	    <p>To learn more about the history and evolution of the CongoCC project, click on the About menu option. The CongoCC repository can be cloned from https://github.com/congo-cc/</p>
 	    <h3 class="divider-h3">Individual Blogs Are Listed Below<h3>
 	</div>
-	<#list posts as post>
+	<#list posts as post> <#-- should this be limited to 10 or 15 posts? -->
   		<#if (post.status == "published")>
   			<a href="${post.uri}"><h1>${post.title}</h1></a>
   			<p>${post.date?string("dd MMMM yyyy")} by ${post.author}</p>
@@ -36,6 +36,6 @@
 	
 	<hr />
 	
-	<p>Older posts are available in the <a href="${content.rootpath}${config.archive_file}">archive</a>.</p>
+	<p>Older posts are available in the <a href="${content.rootpath}${config.archive_file}">archive</a>.</p>  
 
 <#include "footer.ftl">

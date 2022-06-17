@@ -10,15 +10,21 @@ Jonathan Revusky and Nelson Chamberlain
 :toclevels: 2
 :numbered:
 //:front-cover-image: image:coverTree.png[width=1050,height=1600]
-:imagesdir: ./images
-:iconsdir: ./icons
+:imagesdir:
+//depending on the type of post (learning or blog) it must specify the img folder location in the ifdef:pdf-book block
+:iconsdir:
+:docdir: 
 //:stylesdir: ./styles
 :scriptsdir: ./js
 
 :pdf-book:
 
-include::../2022/ArithmeticExampleDesc.adoc[]
+//these references work in MS Code and AsciiDoctor-pdf but NOT in AsciidocFX
 
-include::../2022/NodeScopeClassComments.adoc[]
+include::../learning/2022/ArithmeticExampleDesc.adoc[]
 
-include::../2022/parse-vs-lookahead.adoc[]
+include::../learning/2022/NodeScopeClassComments.adoc[]
+
+include::../learning/2022/stateDiagrams.adoc[]
+
+include::../blog/2022/parse-vs-lookahead.adoc[]
