@@ -1,0 +1,23 @@
+== Building the website
+
+We are using a tool called https://jbake.org/[JBake] to build the static CongoCC website from static content in https://asciidoc.org[AsciiDoc] format.
+
+We suggest that you use a tool called https://sdkman.io[SDKMAN] to install JBake. To install SDKMan, it is just:
+
+[source,bash]
+curl -s "https://get.sdkman.io" | bash
+
+TIP: Sdkman is generally useful for keeping various different JDK versions installed on your system and switching between them with ease. We highly recommend it.
+
+With Sdkman installed, you should be able to install JBake with:
+
+[source,bash]
+sdk install jbake
+
+And then to build the CongoCC.org website:
+
+[source,bash]
+git clone https://github.com/congocc-website/congocc-website.git
+cd congocc-website
+jbake -b
+
