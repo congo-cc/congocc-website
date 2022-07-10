@@ -21,3 +21,19 @@ git clone https://github.com/congocc-website/congocc-website.git
 cd congocc-website
 jbake -b
 
+== Building the PDF
+
+You can build a PDF version of the output using `asciidoctor-pdf`. (Another way would be to convert the asciidoc to Docbook and use the tool chain for converting Docbook to PDF. That should work but I (JR) haven't tried it.)
+
+To install `asciidoctor-pdf` you need to have ruby installed on your system. With ruby installed, the magic incantation to install `asciidoctor-pdf` is:
+
+[source,bash]
+gem install asciidoctor-pdf
+
+And then you need to run:
+
+[source,bash]
+asciidoctor-pdf content/pdf/CongoCCmasterDoc.adoc
+
+And that should put the `CongoCCmasterDoc.pdf` in the `content/pdf` directory.
+
