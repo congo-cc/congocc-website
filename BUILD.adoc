@@ -17,7 +17,7 @@ sdk install jbake
 And then to build the CongoCC.org website:
 
 [source,bash]
-git clone https://github.com/congocc-website/congocc-website.git
+git clone https://github.com/congo-cc/congocc-website.git
 cd congocc-website
 jbake -b
 
