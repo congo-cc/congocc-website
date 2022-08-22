@@ -196,7 +196,6 @@ And then down inside each web page to include in the book:
 endif::[]"
 
 "ifndef::pdf-doc[]
-
 = Post or Page Title
 
 . . . . restof JBake header
@@ -219,3 +218,74 @@ serious fun-making can be marked as ifndef::pdf-doc[] blocks and they
 won't show up in the more serious book material. And in the same way,
 the section/subsection titles and levels of indenture can be marked
 ifdef::pdf-doc[] so they only show up in the book.
+
+== Recommended Combined Template for Articles
+
+----
+//global comments and references about this doc can go here
+"ifdef::pdf-book[]
+== PDF Chapter Title Goes Here
+:imagesdir: ../<doc type - learning or blog>/<year>/img
+endif::pdf-book[]"
+"ifndef::pdf-book[]
+= Blog Heading
+<Author Name>
+<date>
+:jbake-type: post
+:jbake-tags: learning
+:jbake-status: published
+== First Level Indent for Blog
+:imagesdir: ./img
+endif::[]"
+----
+
+IMPORTANT:  The quotation marks in the above block are only there so the asciidoc processor won't try to honor the ifdef/ifndef directives, even though they are part of a code/verbatim block
+
+IMPORTANT:  The first level heading (one equals sign level) absolutely must be the first line inside the ifndef block or jbake won't processes the file. ALSO, jbake interprets a blank line as terminating the header block, so name or date or any of the other jbake settings that appear below the blank line will be ignored.
+
+IMPORTANT:  asciidoc *PROHIBITS* a first level heading anywhere but in the master doc but jBake *REQUIRES* a first level heading for every blog page.
+
+asciidoc, asciidoctor, and asciidoctor-pdf all assume that a first level heading is the book title which can only appear ONCE, in the master doc. However, jbake REQUIRES a first level heading or it won't process the doc into an html page.
+
+Therefore, it is necessary to use the ifdef/ifndef block to define the highest level indent for each type. Because these are different levels, it is best to "normalize the headings" by including a second level heading for the blog inside the ifndef block. That way, any additional headers for your text will automatically be at the same level, whether it is in the blog or in the PDF. If you skip the second level blog heading inside the ifndef block, you will have to put ifdef & ifndef blocks around every sub-heading within your doc so they'll be processed correctly. For example, if your blog contains a second level heading (==), when it is processed as a PDF it will be interpreted as a new chapter.
+
+=== JBake notes:
+
+*   the author name field must be filled in or it won't get "baked" into an html page
+*   the date is NOT required but the blogs are ordered by date so it is best to include one. The date should be in the format YYYY-MM-DD or it may not be interpreted correctly
+*   *_jbake-type_* can be either "post" or "page". They have separate templates and will be processed differently, according to their template.
+*   *_jbake-tag_* is optional but is recommended. The tags are used to generate separate pages for each tag. Eventually those tag pages will be used as "category" pages so someone who wants to see pages that are tagged "parsing" or "roadmap" or whatever will see just those pages. I think spelling is critical so a typo will create a different category.
+*   *_jbake-status_* can be either "draft" or "published". 
+**  *published*: the document is processed into an html page and appears on the website. 
+**  *draft*: the document is processed into an html page but it has "draft-" inserted into the filename *AND* to not be displayed on the website. 
+**  any other status is undefined
+
+=== Images for Blogs and PDFs
+
+IMPORTANT:  Every document must define the correct imagesdir setting for *both* the PDF (ifdef pdf-book) and the website (ifndef pdf-book)
+
+The imagesdir directive must be set correctly for BOTH types of documents inside the ifdef blocks:
+
+*   PDF Docs:
+**  ../<type of doc - learning or blog><year>/img
+*   Website Docs:
+**  ./img
+
+The reason for these different settings is because the relative paths are handled differently by the processing tools. 
+
+*   asciidoctor-pdf uses the location of the (master) document to be processed as the "root" for its image path
+*   jBake uses the location of the file being processed as the "root" for its image page
+
+==== asciidoctor-pdf
+
+Currently, CongoCC is set up to use congocc-website/content/pdf/CongoCCmasterDoc.adoc as the master doc. Inside the master document is a list of every file to be included in the generated PDF. Each included file has its own path specified. Because these included documents will be in a variety of places (learning vs blog, 2022 vs 2023, etc), is ruled out. Instead each document that will go inside the final PDF must include its own imagesdir setting.
+
+==== jBake Website
+
+When jBake runs, it creates or update the output folder that contains the learning and blog folders (as well as all the other infrastructure folders). Under those folders will be the year(s) folder(s) which contains all of the documents for that year as well as the img folder for the documents produced for that year.
+
+==== Image Locations
+
+It could have been setup so there was a single folder for images but this would have created a chaotic maintenance nightmare down the road. It could have also been setup so there was only one imagesdir directive but that would require that we manually duplicate all of the images from their blog/learing image folder locations *OR* we would have had to use absolute paths either in the imagesdir directive OR each image reference would have to include the full absolute path to each image. Either option would have caused all sorts of grief if the contents or images folders got changed.
+
+Finally, the img folder inside the assets folder is copied by jBake to the docroot/img folder. It makes sense to use the assets/img folder for global website images, such as the carousel images that are used in the main page header. Other global images would also appear in here, for example, a custom flourish that was used as a section divider in EVERY doc, it would go here. If an image was only used in a single doc, it wouldn't go here. However, an image that was used for every page (or at least many pages), it would go into the assets/img folder.

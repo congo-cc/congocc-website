@@ -1,21 +1,23 @@
-:imagesdir: ../img
 ifdef::pdf-book[]
-=== Diagrams and States pdf
-:imagesdir: ../learning/img
+:imagesdir: ../learning/2022/img
+== Diagrams and States pdf
 endif::pdf-book[]
 ifndef::pdf-book[]
-= Learning CongoCC
+= Learning CongoCC - Diagrams and States
 Nelson Chamberlain
 2022-06-10
 :jbake-type: post
 :jbake-tags: learning
 :jbake-status: published
-== Diagrams and States
+== Introduction
+:imagesdir: ./img
 endif::[]
 
 As promised in an earlier article, we're going to look at some of the diagramming tools which are commonly used in the field of language parsing. I like to think of these diagramming tools as alternative ways of expressing the actions and behaviors that we want our code to perform. They are different ways of depicting and viewing the steps of the program's task, much the way that watercolors and singing songs are very different ways of expressing a feeling.  
 
-In our discussion of diagrams, we'll also touch upon what are referred to as Finite Automata which are basically recognizers. First, let's take a look at a simple state diagram, sometimes also called a transition diagram. Following is a state diagram for skipping whitespace (WS).
+In our discussion of diagrams, we'll also touch upon what are referred to as Finite Automata which are basically recognizers. If you'd like to read more about them right now, you can skip ahead to the section with that same name.
+
+First, let's take a look at a simple state diagram, sometimes also called a transition diagram. Following is a state diagram for skipping whitespace (WS).
 
 image::Whitespace.drawio.png[Whitespace State Diagram]
 
@@ -25,11 +27,13 @@ The box labeled SKIP WS is considered a "state" and the code remains in that sta
 
 In this extremely simple example, the only way to exit from the SKIP WS state is to read in something OTHER than whitespace, at which point that we transition to a different state, shown by the END symbol. It doesn't matter what that OTHER value was, as long as it wasn't whitespace. 
 
-When viewing/interpreting this diagram as a Transition Diagram, the lines between START and SKIP WS and END are referred to as edges. Each edge is labeled by a symbol or set of symbols that identify how we can advance (or transition) to the next state. If we are reading in the characters of a keyword (else in this case), then each edge would be labeled (left-to-right) with the letters that make up that keyword. The next diagram illustrates this.
+=== State Diagrams as Transition Diagrams
+
+This same diagram can be described as a transition diagrm. Transition Diagrams refer to the lines between START and SKIP WS and END as edges. Each edge is labeled by a symbol or set of symbols that identify how we can advance (or transition) to the next state. If we are reading in the characters of a keyword (else in this case), then each edge would be labeled (left-to-right) with the letters that make up that keyword. The next diagram illustrates this.
 
 image::elseStateDiagram.drawio.png[Transition Diagram]
 
-It is important to emphasize that there is only one single path that can lead to the keyword else being accepted in the END state. The only way to get to State 1 is to have read in an "e" and the only way to get to State 2 is to read in an "l" as the next character. If any other character is read, then we cannot be reading the keyword else. 
+It is important to emphasize that in this diagram there is only one single path that can lead to the keyword else being accepted in the END state. The only way to get to State 1 is to have read in an "e" and the only way to get to State 2 is to read in an "l" as the next character. If any other character is read, then we cannot be reading the keyword else. 
 
 This diagram shows the keyword ending with WS (Whitespace). If something other than WS was read in after State 4, the keyword "else" couldn't be accepted and the flow couldn't move to the END state. Instead, reading of characters would continue until WS was read in and the string of characters read in would be accepted as some kind of identifier.
 
@@ -42,6 +46,8 @@ image::relativeOperators.drawio.png[]
 One reason is that even relatively simple reading and interpreting tasks can become large and complicated diagrams. It's not too bad reading the first character, there's four choices that can lead to states 1 - 4. But then handling the next character expands the number of choices, shown as states 5 - 12. Imagine what this diagram would have looked like if states 1 - 4 could have had more than two choices and lead to more than 20 or 30 states, with some final states shared by more than one preceding choices. 
 
 Another reason for state diagrams not being used more is that they are *not* dynamic, so if there are changes to logic or objects, the diagrams must be manually updated to match these changes. And factor in the cost in the time and labor to create the diagrams in the first place and state diagrams just don't fit well with the lean, fast-paced development environment.
+
+=== Other Types of Diagrams
 
 Before we leave this blog, let's take a brief look at syntax diagrams (or railroad diagrams) as a way to represent grammars. In other words, they function similarly to state diagrams.
 
@@ -67,5 +73,7 @@ line(
 The github readme describes the specification as "...a hierarchy of basic elements... it is a set of nested Grooby function calls".
 
 As much as I enjoyed learning jSyntrax, syntax diagrams suffer from the same issues that affect state diagrams: they can become complicated very quickly and they require manual maintenance to keep them up to date. But in defense of state and syntax diagrams, I am unaware of any diagramming tool that doesn't suffer from the same issues.
+
+=== Preview of Coming Articles
 
 Next we'll look at automatons. Not Robbie the Robot kind that march around trying to warn Will Robinson about danger, but the two kinds of Finite Automata: Deterministic and Nondeterministic and how these two types of Finite Automata relate to parsers.

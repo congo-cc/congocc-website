@@ -2,8 +2,7 @@
 // Author's name is interpolated in template as ${post.author} in index.ftl
 // as as ${content.author} in page.ftl and post.ftl
 ifdef::pdf-book[]
-== Learning CongoCC by Examples
-=== Dissecting the Arithmetic Grammars
+== Dissecting the Arithmetic Grammars
 endif::[]
 ifndef::pdf-book[]
 = Learning CongoCC by Examples - Part 1
@@ -107,9 +106,11 @@ Imagine trying to get all those possible ways of grouping and ordering the opera
 ((((3 + 8) * 5 - 7)))
 ----
 
-will your straightforward code handle that possibility?
+would your straightforward code handle that possibility?
 
 The snippet of grammar above demonstrates the power of recursion to handle any combination of grouping with parentheses in a comparatively small number of lines. So let's step through these grammar lines and see how they work.
+
+=== Running the Arithmetic Example
 
 If you haven't done so already, from a command line/terminal window, change directory to the examples/arithmetic folder of the  CongoCC repository that you downloaded/cloned and issue these commands:
 
@@ -239,8 +240,8 @@ Together, these relatively few lines of grammar code contain the almost magical 
 
 This is possible because the AdditiveExpression and MultiplicativeExpression productions cover all four arithmetic operations between them. Based on the arithmetic expression you provide as input, these two productions, aided by the ParentheticalExpression production, call themselves recursively or call each other as required.
 
+=== Conclusion
+
 My suspicion is that the simplicity of this short grammar disguises how difficult it was to originally write it. I suspect this because I see this arithmetic example in numerous places and pretty much identically expressed. It is a marvelous example of sophisticated simplicity, but a pattern that isn't used that often because of its sophistication requires a lot of thought and planning and in depth understanding of how all the different components function. And let's admit it, most of us just need to get the job done and don't really have the time (and willingness) to invest in really elegant solutions.
 
 Next, we'll look at NodeScopes and State Diagrams
-
-//NOTE:   Nelson, include the thought that nesting the calls works like nested switch statements.

@@ -11,7 +11,7 @@ Jonathan Revusky and Nelson Chamberlain
 :numbered:
 //:front-cover-image: image:coverTree.png[width=1050,height=1600]
 :imagesdir:
-//depending on the type of post (learning or blog) it must specify the img folder location in the ifdef:pdf-book block
+// relative images paths are resolved relative to the input document so the actual post (learning or blog) must specify the img folder location in the ifdef:pdf-book block
 :iconsdir:
 :docdir: 
 //:stylesdir: ./styles
@@ -26,5 +26,7 @@ include::../learning/2022/ArithmeticExampleDesc.adoc[]
 include::../learning/2022/NodeScopeClassComments.adoc[]
 
 include::../learning/2022/stateDiagrams.adoc[]
+
+include::../learning/2022/finiteAutomata.adoc[]
 
 include::../blog/2022/parse-vs-lookahead.adoc[]

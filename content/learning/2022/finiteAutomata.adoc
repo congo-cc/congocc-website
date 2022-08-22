@@ -1,0 +1,109 @@
+ifdef::pdf-book[]
+:imagesdir: ../learning/2022/img
+== Finite Automata pdf
+endif::pdf-book[]
+ifndef::pdf-book[]
+= Learning CongoCC - Finite Automata
+Nelson Chamberlain
+2022-06-12
+:jbake-type: post
+:jbake-tags: learning
+:jbake-status: published
+== Introduction
+:imagesdir: ./img
+endif::[]
+
+In our last post, state diagrams were introduced and briefly discussed. Syntax (railroad) diagrams were even more briefly described. The importance of state diagrams was generally downplayed in that post because, from a pragmatic production-oriented perspective, it is difficult to justify the expense of developing and maintaining state diagrams. 
+
+However, state diagrams go hand-in-hand with the concept of finite automata which is widely used in lexical analysis, parsing, and programming language development. The word automata comes from a Greek word that means "self-acting, self-willed, self-moving". An automaton (automata is the plural form) is an abstract self-propelled computing device which follows a predetermined sequence of operations automatically, such as a wind-up toy soldier that will march across a tabletop. An automaton with a finite number of states is called a finite automaton or finite-state machine.
+
+=== Historical Background
+
+Modern computers trace their origins to the time of World War II when there was a desperate need for more accurate and faster calculation of such things as the flight path of ballistic projectiles, etc. Alan Turing, who is considered by many to be the modern father of theoretical science, worked at Bletchley Park, Britain's codebreaking center during World War II. There he led the development of an electromechanical machine (sort of a single purpose computer) that used a brute force method to find the settings for the German Enigma encryption machine.
+
+State diagrams and finite automata trace their roots back to the early days of general computer hardware and software development in the 20th century. These tools were instrumental in clarifying the thinking about the hardware and software that was being invented. If you search for documentation about finite automata, many of the documents that will be found are from the 1950's and 1960's. In fact, the first published description of finite automata dates back to 1943. 
+
+As we achieved greater understanding of state diagrams and fininte automata and our usage of them matured, the number of papers describing them or describing novel usages of them tapered off. Which is not to say they are no longer used; applications of these concepts are described in papers going into publication every day. They are not, however, considered as "cutting edge" as they once were.
+
+=== Two Branches of Computer Science
+
+Back when I first started studying computer programming languages in the 1980's, I was surprised to see that Computer Science was part of the Mathematics department at most colleges and universities. And I was even more surprised when reading many of the Computer Science course descriptions that I couldn't understand more than a couple of words in them. And I was then further surprised to see how few courses actually taught programming because the majority of classes taught the theoretical mathematical foundation of computing.
+
+The Computer Science departments started to change in the late 1980's and early 1990's when businesses started to complain that many of the top graduates with degrees in computer science couldn't write usable code. What the businesses wanted was people that could sit down in front of computer terminals (and eventually computers) and start writing code right away that would implement or help improve processing to help them make money. Instead, what they got were theoreticians who, when given an assignment, would cover one or more blackboards with mathematical equations, sometimes for months on end.
+
+All of which reminds me of a joke I heard once. A farmer hears that theoretical physicists are the way of the future so he hires one. After a few months of not hearing anything from his physicist, he decides to find out what he's been up to. The farmer gathers up all his farm hands and they sit down in front of the physicist, who proudly points to his blackboard full of equations and begins, "Consider a cow that is perfectly spherical and of uniform density . . . "
+
+So there now seems to be two branches of computer science: the mathematical branch and the programming branch. Since neither branch has proven to be the "true" branch, most colleges and universities now offer two types of Computer Science courses: programming courses and math courses. The courses that cover compilers and design of computer languages tend to be on the math end of the spectrum, where it is not unusual to encounter definitions similar to the following:
+
+----
+  An automaton can be represented formally by a 5-tuple M = ⟨ Σ , Γ , Q , δ , λ ⟩, where:
+
+    Σ  is a finite set of symbols, called the input alphabet of the automaton,
+    Γ  is another finite set of symbols, called the output alphabet of the automaton,
+    Q  is a set of states,
+    δ  is the next-state function or transition function δ : Q × Σ → Q  mapping state-input pairs to successor states,
+    λ  is the next-output function λ : Q × Σ → Γ mapping state-input pairs to outputs.
+        
+  If Q is finite, then M is a finite automaton.
+----
+
+If you enjoy (or at least are very comfortable) reading the above definition, you will probably benefit more from reading about abstract machines, formal language theory and theoretical computer science, etc., than you will by reading my posts. I freely admit that math is *not* one of my strengths and that I get little from reading the above block of text; I belong to the second branch of computer science. I am very much like the farmer in the preceding joke who just wants to milk the cows instead of being like the physicist who seeks to reduce everything to elegant universal mathematical statements that reveal their profound secrets upon concentrated contemplation.
+
+But I digress. Let us return to the subject of this post, finite automata.
+
+=== Defining Finite Automata
+
+For our purposes, a finite automaton can be in only one state at a time and there is only a finite number of states. This definition matches up pretty well with our state diagrams where each bubble represents one state and there is a fixed (finite) number of bubbles on the diagrm. 
+
+Further, the only way to transition to a different state (or bubble on the diagram) is if the automaton receives the correct input. In state diagrams, the correct input are shown as arrow lines (or edges) between the bubbles. These lines/edges are labeled with the input necessary to move to the next state. When the finite automaton has successfully reached its end state, it "accepts" the input it received. In other words, a finite automaton is a "machine" that can only accept or reject the input it received.
+
+Compare the finite automata as defined to Infinite Automata, which are currently computationally impossible because there is no way of defining or predicting which of an infinite number of transitions will be selected and which of an infinite number of states it will enter. In other words, there is no way to write the code or even develop a programming language that will handle infinite possiblities. Perhaps quantum computing will change that.
+
+Finite automata come in two flavors:
+
+*   Deterministic Finite Automata
+*   Nondeterministic Finite Automata
+
+=== Deterministic Finite Automata (DFA)
+
+A finite automaton is categorized as a DFA if there is a single predetermined sequence of states that must be run through for the input to be accepted. Let's repeat the state diagram for the keyword else and compare it to the definition of a DFA.
+
+image::elseStateDiagram.drawio.png[Else Statement as a DFA]
+
+In this diagram, the only way to move from START to bubble 1 is to have received "e" as input, and the only way to move through bubbles 2 through 4 is be receiving, in the correct order, the letters "l", "s" and "e" and the only way to move to the END (or accepting) state is to receive some terminating character, in this diagram shown as WS (whitespace). If we spell it "eesl" then it would be rejected as the keyword "else", although it could still be accepted as an identifier.image::images/image.png[]
+This example doesn't mean that a DFA must be a literal value; it was just the simplest possible example to illustrate a point. Regular expressions are frequently understood as being finite automata consisting of a finite set of states and a set of transitions that can move from one state to another state. In the above diagram, if e was token <E> that was defined as "E" | "e" | "ē" | "ɇ" then reading in any one of those characters would move you to state 1. If the other letters in the diagram were also tokens that were defined in much the same way, then ELSE or eLsE or ɇlSē would accepted as valid input that move through the states in the correct sequence to get to the END state.
+
+Moving further up the syntactic tree, by re-labeling the edges this same four state diagram could represent the beginning portion of an if statement in Java. The letters on the first edge, "if", must be read in to enter state 1. The second edge would be labled with "(" which must be read in next to enter state 2. The third edge would be labeled with something like <BOOL_EXPR> to represent a valid boolean expression that must be read in to enter state 3, followed by the edge labeled ")" which must be read in to enter state 4. If you entered "() if _expr_" it would be rejected and reported as a syntax error. 
+
+The token <BOOL_EXPR> would need to have its own state diagram. This diagram would need to specify the rules (edges) to get to the accepting state (boolean true or false). If the expression returns a double or a string, then the expression cannot enter the accepting state and will be rejected.
+
+And of course, a real DFA for an "if" statement would have to include the states for the actions performed when true, and states for the "else if" option and the "else" option, but we looked at this chunk of it just to simplify the discussion.
+
+=== Nondeterministic Finite Automata (NFA)
+
+An NFA is similar to a DFA but allows a transition to one of multiple states on reading in the same input or transition to the same state using different input. The following diagram illustrates an NFA for the regular expression (0|1)* 1 (0|1)3 where the last expression is repeated three times. Two valid expressions are shown below:
+
+----
+ 101010111100001100 1 0 0 0
+ 00 1 1 1 1
+----
+
+The first line shows zero or more instances of either 0 or 1, followed by a 1, followed by three instances of either 0 or 1, which in this example are all zeroes. The second line begins with two instances of either 0 or 1, which in this example were both zeroes, followed by a 1 followed by three instances of 0 or one, which in this case was were all ones. 
+
+image::NFAdiagram.drawio.png[NFA Diagram for a Regular Expression]
+
+In this diagram, State 1 will accept either zeroes or ones and always return to State 1 until the lexeme ends, for example a white space is read. A single one must then be read to advance to State 2. If more than a single one is read or something other than a one is read then State 2 is not entered. Once in State 2, a single zero or one must be read to advance to State 3. Once in State 4, it must read as single zero or one to advance to the END state, at which point the expression is accepted as matching the regular expression.
+
+An equivalent DFA diagram follows:
+
+image::DFAequivalentDiagram.drawio.png[DFA Diagram Equivalent to NFA]
+
+This DFA diagram begins the same way but rapidly expands to a total of 16 states because each state must be explicitly identified. Using the second line of the expressions shown above, processing States 1 and 2 would be as done before. However, in the DFA diagram, the next 1 would take us to State 3, followed by State 5, followed by State 9, at which point it would move to the END state and be accepted as matching the regular expression.
+
+Every NFA can be converted into a DFA and a considerable about of thought and writing has been devoted to this subject, including how to prune the number of states so only realistic paths/states are included in the DFA. Because NFAs have so many ways to get to the END state, it is of no surprise then that programming languages and compilers are created to handle only DFAs.
+
+=== Closing Remarks
+
+These diagrams above used numbers as abstract representations of the lexemes and tokens that would normally be read in from the input source. These diagrams also used binary numbers (0,1) to simplify the diagrams and show a reasonably small number of states. Imagine an NFA where each state had four different edges/paths that could lead to the next state; the number of possible DFA states would become essentially unmanageable after just a few states.
+
+If we imagine each state bubble representing a production rule or branch of an if statement, it is easy to see why expressing our language logic without NFAs (or at least limiting them as much as possible) is desirable. If you take away nothing else from this essay, hopefully you will see the just how important it is to make our grammars as "specific" as possible so it can generate a manageable number of choices (states).

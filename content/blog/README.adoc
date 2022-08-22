@@ -3,3 +3,22 @@ Placeholder for blogs for 2022.
 The blog listed for 2022 came from an email from Jon that he thought would probably become a published blog post at some point.
 
 Note that the Title line MUST be the first line inside the JBake header lines. Also note that the author field must be filled in or the file won't get "baked" and no html output will be generated. The status of Draft does NOT prevent this file from being converted into an html page but it will include the word "draft" in the name of this file. However, the status of draft does prevent it from being displayed on the website because the parsing/rendering step ignores any page/post that does *NOT* have the status of published.
+
+Also note that the images for the blogs for 2022 must appear in the img folder below (subfolder of) the 2022 folder. When 2023 rolls around, the images will appear in the img folder below the 2023 folder. 
+
+The imagesdir directive must be set correctly for BOTH types of documents inside the ifdef blocks:
+
+*   PDF Docs:
+**  ../<type of doc - learning or blog><year>/img
+*   Website Docs:
+**  ./img
+
+The reason for these settings is because the relative paths are handled differently by the processing tools. 
+
+asciidoctor-pdf uses the location of the document to be processed as the "root", which for our usage is CongoCCmasterDoc.adoc. Inside the master document each included file has its own path specified, either down into the blog folder or the learning folder and then to the year. Because these documents will be in a variety of places (learning vs blog, 2022 vs 2023, etc) the master doc CAN'T use a single imagesdir setting. Instead each document that will go inside the final PDF must include its own settings.
+
+jbake uses the location of the file being processed as the root. This means that it will create the output folder that will contain the learning and blog folders (as well as all the other infrastructure folders) and under them it will create the year(s) folder(s) and under each one of them there it will create the img folder.
+
+I could have made it so there was a single imagesdir directive but that would require that we copy all of the images from their blog/learing image folder locations *OR* we would have had to use absolute paths either in the imagesdir directive OR each image reference would have to include the full path to each image. Either option would have caused all sorts of grief if the contents or images folders got changed.
+
+IMPORTANT:  the img folder inside the assets folder is for global website images, such as the carousel images that are used in the main page header. Other global images would also appear in here, for example, a custom flourish that was used as a section divider in EVERY doc, it would go here. If it was only used in a single doc, it wouldn't go here.

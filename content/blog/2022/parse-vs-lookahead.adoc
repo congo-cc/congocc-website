@@ -3,19 +3,18 @@
 //[[[]]] triple brackets are bibliographic references
 [[parsing-vs-scanning]]
 ifdef::pdf-book[]
-== CongoCC Basics
-
-=== Parsing vs. Scanning 
+:imagesdir: ../blog/2022/img
+== CongoCC Blog - Parsing vs. Scanning 
 endif::pdf-book[]
-
 ifndef::pdf-book[]
-= CongoCC Basics
+= CongoCC Blog - Parsing vs. Scanning 
 Jonathan Revusky
 2022-02-01
 :jbake-type: post
 :jbake-tags: announcements, roadmap
 :jbake-status: published
 == Parsing vs. Scanning 
+:imagesdir: ./img
 endif::[]
 
 (((Parsing vs Scanning)))
@@ -107,3 +106,7 @@ _Generally speaking, the key to writing *robust* grammars in CongoCC is to write
 
 Well, at least to the greatest extent possible. I guess the above is also a specific case of the
 https://en.wikipedia.org/wiki/Principle_of_least_astonishment[Principle of Least Surprise].
+
+// === BEACH SURPRISE!! 
+
+// image::placeholder.jpg[Test Image]
