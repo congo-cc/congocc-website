@@ -9,7 +9,7 @@
 		</div>
 	-->
 	<div class="blog-intro">
-	    <h2>Welcome to the Congo - CongoCC that is</h2>
+	    <h2>Welcome to the Congo - CongoCC, that is</h2>
 	    <p>CongoCC is an open-source resource site that provides <strong>C</strong>ode-generation <strong>C</strong>omponents, currently:</p>
 	        <ul>
 	            <li>Up-to-date Java parsers (Java 8 - 18 supported)</li>

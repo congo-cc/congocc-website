@@ -1,0 +1,39 @@
+== Building the website
+
+We are using a tool called https://jbake.org/[JBake] to build the static CongoCC website from static content in https://asciidoc.org[AsciiDoc] format.
+
+We suggest that you use a tool called https://sdkman.io[SDKMAN] to install JBake. To install SDKMan, it is just:
+
+[source,bash]
+curl -s "https://get.sdkman.io" | bash
+
+TIP: Sdkman is generally useful for keeping various different JDK versions installed on your system and switching between them with ease. We highly recommend it.
+
+With Sdkman installed, you should be able to install JBake with:
+
+[source,bash]
+sdk install jbake
+
+And then to build the CongoCC.org website:
+
+[source,bash]
+git clone https://github.com/congo-cc/congocc-website.git
+cd congocc-website
+jbake -b
+
+== Building the PDF
+
+You can build a PDF version of the output using `asciidoctor-pdf`. (Another way would be to convert the asciidoc to Docbook and use the tool chain for converting Docbook to PDF. That should work but I (JR) haven't tried it.)
+
+To install `asciidoctor-pdf` you need to have ruby installed on your system. With ruby installed, the magic incantation to install `asciidoctor-pdf` is:
+
+[source,bash]
+gem install asciidoctor-pdf
+
+And then you need to run:
+
+[source,bash]
+asciidoctor-pdf content/pdf/CongoCCmasterDoc.adoc
+
+And that should put the `CongoCCmasterDoc.pdf` in the `content/pdf` directory.
+
